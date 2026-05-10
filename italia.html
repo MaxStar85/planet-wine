@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Italia</title>
+  <link rel="stylesheet" href="/planet-wine/static/css/style.css">
+</head>
+<body data-wait style="opacity:0">
+  <a id="btn-back" href="#" onclick="event.preventDefault(); goBack()" class="btn-back">← Indietro</a>
+  <a href="/planet-wine/index.html" class="btn-home">⌂ Home</a>
+  <a href="/planet-wine/carrello.html" class="carrello-btn">Carrello <span class="badge">0</span></a>
+
+  <div class="page">
+    <div class="page-header">
+      <h1>Italia</h1>
+      <p id="sottotitolo"></p>
+    </div>
+
+    <div class="regioni-grid" id="regioni"></div>
+  </div>
+
+  <script src="/planet-wine/static/js/main.js"></script>
+  <script src="/planet-wine/static/js/data_engine.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const tipo = urlParams.get("tipo");
+
+    document.getElementById("sottotitolo").textContent =
+      `${tipo} · Seleziona la regione`;
+
+    document.getElementById("btn-back").href =
+      `/planet-wine/bivio.html?tipo=${encodeURIComponent(tipo)}`;
+
+    const regioniConfig = {
+      "Trentino": {
+        file: "Trentino.png",
+        artistica: true,
+        size: "auto 100%",
+        position: "center center"
+      },
+      "Alto Adige": {
+        file: "AltoAdige.png",
+        artistica: true,
+        size: "auto 94%",
+        position: "center center"
+      },
+      "Piemonte": {
+        file: "Piemonte.png",
+        artistica: true,
+        size: "auto 125%",
+        position: "center center"
+      },
+      "Valle d'Aosta": {
+        file: "ValleDAosta.png",
+        artistica: true,
+        size: "auto 70%",
+        position: "center center"
+      },
+      "Lombardia": {
+        file: "Lombardia.png",
+        artistica: true,
+        size: "auto 100%",
+        position: "center center"
+      },
+      "Veneto": {
+        file: "Veneto.png",
+        artistica: true,
+        size: "auto 94%",
+        position: "center center"
+      },
+      "Friuli-Venezia Giulia": {
+        file: "FriuliVeneziaGiulia.png",
+        artistica: true,
+        size: "auto 94%",
+        position: "center center"
+      },
+      "Liguria": {
+        file: "Liguria.png",
+        artistica: true,
+        size: "auto 92%",
+        position: "center center"
+      },
+      "Emilia-Romagna": {
+        file: "EmiliaRomagna.png",
+        artistica: true,
+        size: "auto 92%",
+        position: "center center"
+      },
+      "Toscana": {
+        file: "Toscana.png",
+        artistica: true,
+        size: "auto 145%",
+        position: "center 25%"
+      },
+      "Umbria": {
+        file: "Umbria.png",
+        artistica: true,
+        size: "auto 110%",
+        position: "center center"
+      },
+      "Marche": {
+        file: "Marche.png",
+        artistica: true,
+        size: "auto 112%",
+        position: "center 40%"
+      },
+      "Lazio": {
+        file: "Lazio.png",
+        artistica: true,
+        size: "auto 110%",
+        position: "center 44%"
+      },
+      "Abruzzo": {
+        file: "Abruzzo.png",
+        artistica: true,
+        size: "auto 100%",
+        position: "center 5%"
+      },
+      "Molise": {
+        file: "Molise.png",
+        artistica: true,
+        size: "auto 90%",
+        position: "center 5%"
+      },
+      "Campania": {
+        file: "Campania.png",
+        artistica: true,
+        size: "auto 140%",
+        position: "center 40%"
+      },
+      "Basilicata": {
+        file: "Basilicata.png",
+        artistica: true,
+        size: "auto 120%",
+        position: "center center"
+      },
+      "Puglia": {
+        file: "Puglia.png",
+        artistica: true,
+        size: "auto 96%",
+        position: "center center"
+      },
+      "Calabria": {
+        file: "Calabria.png",
+        artistica: true,
+        size: "auto 98%",
+        position: "center center"
+      },
+      "Sicilia": {
+        file: "Sicilia.png",
+        artistica: true,
+        size: "auto 94%",
+        position: "30% -50%"
+      },
+      "Sardegna": {
+        file: "Sardegna.png",
+        artistica: true,
+        size: "auto 115%",
+        position: "center center"
+      }
+    };
+
+    const container = document.getElementById("regioni");
+    const imageUrls = [];
+
+    DataEngine.calcolaDisponibilita(tipo, getFiltro())
+      .then(disponibilita => {
+
+        DataEngine.AREE_ITALIA.forEach(reg => {
+
+          const conf = regioniConfig[reg];
+          const disponibile = disponibilita[reg] === true;
+          const a = document.createElement("a");
+
+          a.className = conf && conf.artistica
+            ? "tasto-regione tasto-regione-mappa"
+            : "tasto-regione";
+
+          if (!disponibile) {
+            a.classList.add("non-disponibile");
+          }
+
+          a.href = disponibile
+            ? `/planet-wine/lista.html?tipo=${encodeURIComponent(tipo)}&area=${encodeURIComponent(reg)}${filtroPrezzoParams()}`
+            : "#";
+
+          if (conf && conf.file) {
+            const imgUrl = `/planet-wine/static/img/bandiere/${conf.file}`;
+            imageUrls.push(imgUrl);
+
+            a.style.background = `
+              linear-gradient(
+                rgba(248, 244, 236, 0.62),
+                rgba(244, 238, 228, 0.62)
+              ),
+              url("${imgUrl}") ${conf.position}/${conf.size} no-repeat,
+              linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%)
+            `;
+          }
+
+          a.innerHTML = `<span>${reg}</span>`;
+          container.appendChild(a);
+        });
+
+        applyFiltroToLinks();
+        preloadImages(imageUrls).then(() => {
+          showPage();
+        });
+      });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/planet-wine/sw.js', { scope: '/planet-wine/' })
+        .then(reg => console.log('✓ Service Worker registrato', reg))
+        .catch(err => console.error('✗ Service Worker fallito:', err));
+    }
+  </script>
+</body>
+</html>

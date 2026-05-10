@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catalogo Vini — Planet Bevande</title>
+  <link rel="manifest" href="/planet-wine/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="PlanetWine">
+  <link rel="apple-touch-icon" href="/planet-wine/static/img/PlanetWine.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/planet-wine/static/img/PlanetWine.png">
+  <link rel="stylesheet" href="/planet-wine/static/css/style.css">
+  <style>
+    .home-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 14px 10px;
+      overflow: hidden;
+    }
+
+    .home-inner {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translateY(-12px);
+    }
+
+    .home-logo-header {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(0.62rem, 0.72vw, 0.85rem);
+      letter-spacing: 0.18em;
+      color: var(--text-light);
+      text-transform: uppercase;
+      white-space: nowrap;
+      margin-bottom: 14px;
+      flex-shrink: 0;
+    }
+
+    .home-header {
+      text-align: center;
+      margin-bottom: clamp(18px, 2vw, 28px);
+      flex-shrink: 0;
+    }
+
+    .home-header h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+
+    .home-header p {
+      font-size: clamp(0.74rem, 0.88vw, 0.96rem);
+      color: var(--text-light);
+      margin-top: 4px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      width: min(92vw, 1240px);
+    }
+
+    .home-grid .tasto {
+      aspect-ratio: 1 / 0.92;
+      padding: 10px;
+      gap: 4px;
+      min-height: 0;
+    }
+
+    .bottiglia-box {
+      width: 100%;
+      height: 118px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      overflow: visible;
+      flex-shrink: 0;
+    }
+
+    .bottiglia-img {
+      display: block;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+      width: auto;
+      height: auto;
+      max-width: none;
+      max-height: none;
+    }
+
+    .img-champagne {
+      width: 110px;
+      height: 140px;
+      transform: translateX(0px) translateY(0px);
+    }
+
+    .img-spumante {
+      width: 102px;
+      height: 132px;
+      transform: translateX(0px) translateY(0px);
+    }
+
+    .img-bianco {
+      width: 102px;
+      height: 136px;
+      transform: translateX(0px) translateY(0px);
+    }
+
+    .img-rosato {
+      width: 104px;
+      height: 138px;
+      transform: translateX(0px) translateY(0px);
+    }
+
+    .img-rosso {
+      width: 104px;
+      height: 138px;
+      transform: translateX(0px) translateY(0px);
+    }
+
+    .img-dolce {
+      width: 108px;
+      height: 142px;
+      transform: translateX(0px) translateY(8px);
+    }
+
+    .home-grid .tasto span.label {
+      display: block;
+      text-align: center;
+      margin-top: 2px;
+      font-size: clamp(0.78rem, 0.88vw, 1.02rem);
+      line-height: 1.15;
+    }
+
+    @media (max-height: 900px) {
+      .home-inner {
+        transform: translateY(-6px);
+      }
+
+      .home-header {
+        margin-bottom: 14px;
+      }
+
+      .home-grid {
+        gap: 10px;
+      }
+
+      .home-grid .tasto {
+        aspect-ratio: 1 / 0.86;
+        padding: 8px;
+      }
+
+      .bottiglia-box {
+        height: 96px;
+        margin-bottom: 8px;
+      }
+    }
+
+    .tasto-analcolici {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: clamp(14px, 1.6vw, 22px);
+      padding: clamp(10px, 1vw, 16px) clamp(28px, 3.5vw, 56px);
+      border-radius: 50px;
+      background: rgba(255, 252, 246, 0.6);
+      border: 1px solid var(--gray-light);
+      text-decoration: none;
+      transition: all 0.18s ease;
+      box-shadow: 0 2px 8px rgba(44, 40, 37, 0.06);
+    }
+
+    .tasto-analcolici span {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(0.78rem, 0.88vw, 1rem);
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      color: var(--text-light);
+    }
+
+    .tasto-analcolici:hover {
+      background: rgba(255, 255, 255, 0.45);
+      border-color: rgba(88, 145, 120, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(44, 40, 37, 0.10);
+    }
+
+    .tasto-analcolici:hover span {
+      color: #4A7A5E;
+    }
+
+    @media (max-height: 760px) {
+      .home-inner {
+        transform: translateY(0);
+      }
+
+      .home-header {
+        margin-bottom: 8px;
+      }
+
+      .home-header h1 {
+        font-size: clamp(1.5rem, 2vw, 2.15rem);
+      }
+
+      .home-header p {
+        font-size: 0.68rem;
+        margin-top: 1px;
+      }
+
+      .home-grid {
+        gap: 6px;
+      }
+
+      .home-grid .tasto {
+        aspect-ratio: 1 / 0.74;
+        padding: 4px;
+      }
+
+      .bottiglia-box {
+        height: 66px;
+        margin-bottom: 10px;
+      }
+
+      .img-champagne {
+        width: 84px;
+        height: 108px;
+      }
+
+      .img-spumante {
+        width: 78px;
+        height: 100px;
+      }
+
+      .img-bianco {
+        width: 78px;
+        height: 102px;
+      }
+
+      .img-rosato {
+        width: 80px;
+        height: 104px;
+      }
+
+      .img-rosso {
+        width: 80px;
+        height: 104px;
+      }
+
+      .img-dolce {
+        width: 84px;
+        height: 108px;
+        transform: translateX(0px) translateY(4px);
+      }
+
+      .home-grid .tasto span.label {
+        font-size: 0.76rem;
+        margin-top: 2px;
+      }
+    }
+
+    /* ── FILTRO PREZZO ─────────────────────────────────────────── */
+
+    .filtro-btn {
+      position: fixed;
+      top: clamp(12px, 1.5vw, 24px);
+      height: clamp(34px, 3.2vw, 46px);
+      min-width: clamp(34px, 3.2vw, 46px);
+      right: calc(clamp(12px, 1.5vw, 24px) + clamp(120px, 12vw, 170px));
+      appearance: none;
+      -webkit-appearance: none;
+      background: rgba(255, 252, 246, 0.6);
+      border: 1px solid var(--gray-light);
+      border-radius: 50px;
+      padding: clamp(8px,0.8vw,12px) clamp(14px,1.3vw,20px);
+      font-size: clamp(0.72rem, 0.8vw, 0.9rem);
+      font-family: "Inter", sans-serif;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(44, 40, 37, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      transition: all 0.15s ease;
+      z-index: 100;
+    }
+
+    .filtro-btn:hover {
+      color: var(--bordeaux);
+      border-color: rgba(123, 45, 62, 0.28);
+      background: rgba(255, 255, 255, 0.45);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(44, 40, 37, 0.10);
+    }
+
+    .filtro-btn.attivo {
+      color: var(--bordeaux);
+    }
+
+    .filtro-icon {
+      width: clamp(14px, 1.4vw, 18px);
+      height: clamp(14px, 1.4vw, 18px);
+      fill: currentColor;
+      transition: fill 0.2s ease;
+    }
+
+    .filtro-btn::after {
+      content: "Filtro prezzo";
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 252, 246, 0.96);
+      border: 1px solid var(--gray-light);
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 0.72rem;
+      font-family: "Inter", sans-serif;
+      font-weight: 500;
+      color: var(--text-light);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(44, 40, 37, 0.10);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .filtro-btn:hover::after {
+      opacity: 1;
+    }
+
+    .filtro-reset {
+      position: fixed;
+      top: clamp(12px, 1.5vw, 24px);
+      height: clamp(34px, 3.2vw, 46px);
+      min-width: clamp(34px, 3.2vw, 46px);
+      right: calc(clamp(12px, 1.5vw, 24px) + clamp(180px, 18vw, 240px));
+      appearance: none;
+      -webkit-appearance: none;
+      background: rgba(255, 252, 246, 0.6);
+      border: 1px solid var(--gray-light);
+      border-radius: 50px;
+      padding: clamp(8px,0.8vw,12px) clamp(14px,1.3vw,20px);
+      font-size: clamp(0.72rem, 0.8vw, 0.9rem);
+      font-family: "Inter", sans-serif;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(44, 40, 37, 0.06);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      transition: all 0.15s ease;
+      z-index: 100;
+    }
+
+    .filtro-reset:hover {
+      color: var(--bordeaux);
+      border-color: rgba(123, 45, 62, 0.28);
+      background: rgba(255, 255, 255, 0.45);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(44, 40, 37, 0.10);
+    }
+
+    .filtro-reset.visibile {
+      display: flex;
+    }
+
+  </style>
+</head>
+<body data-wait style="opacity:0">
+  <div class="home-page">
+    <div class="home-inner">
+      <div class="home-logo-header">Planet Bevande · Catalogo 2026</div>
+
+      <div class="home-header">
+        <h1>Catalogo Vini</h1>
+        <p>Seleziona una categoria</p>
+      </div>
+
+      <div class="home-grid">
+
+        <a href="/planet-wine/lista.html?tipo=Champagne&area=Champagne" class="tasto">
+          <div class="bottiglia-box">
+            <img src="/planet-wine/static/img/champagne.png" alt="Champagne" class="bottiglia-img img-champagne">
+          </div>
+          <span class="label">Champagne</span>
+        </a>
+
+        <a href="/planet-wine/bivio.html?tipo=Spumante" class="tasto">
+          <div class="bottiglia-box">
+            <img src="/planet-wine/static/img/spumante.png" alt="Spumanti" class="bottiglia-img img-spumante">
+          </div>
+          <span class="label">Spumanti</span>
+        </a>
+
+        <a href="/planet-wine/bivio.html?tipo=Vino Bianco" class="tasto">
+          <div class="bottiglia-box">
+            <img src="/planet-wine/static/img/bianco.png" alt="Vini Bianchi" class="bottiglia-img img-bianco">
+          </div>
+          <span class="label">Vini Bianchi</span>
+        </a>
+
+        <a href="/planet-wine/bivio.html?tipo=Vino Rosato" class="tasto">
+          <div class="bottiglia-box">
+            <img src="/planet-wine/static/img/rosato.png" alt="Vini Rosati" class="bottiglia-img img-rosato">
+          </div>
+          <span class="label">Vini Rosati</span>
+        </a>
+
+        <a href="/planet-wine/bivio.html?tipo=Vino Rosso" class="tasto">
+          <div class="bottiglia-box">
+            <img src="/planet-wine/static/img/rosso.png" alt="Vini Rossi" class="bottiglia-img img-rosso">
+          </div>
+          <span class="label">Vini Rossi</span>
+        </a>
+
+        <a href="/planet-wine/bivio.html?tipo=Vino Dolce/Passito" class="tasto">
+          <div class="bottiglia-box">
+            <img src="/planet-wine/static/img/dolce.png" alt="Vini Dolci" class="bottiglia-img img-dolce">
+          </div>
+          <span class="label">Vini Dolci</span>
+        </a>
+
+      </div>
+
+      <a href="/planet-wine/lista.html?tipo=Analcolici&area=Analcolici" class="tasto-analcolici">
+        <span>✦ Selezione Analcolica ✦</span>
+      </a>
+
+    </div>
+  </div>
+
+<button class="filtro-btn" onclick="apriFiltro()">
+  <svg viewBox="0 0 24 24" class="filtro-icon">
+    <path d="M3 5h18l-7 8v5l-4 2v-7L3 5z"/>
+  </svg>
+</button>
+
+<button class="filtro-reset" id="filtro-reset" onclick="resetFiltro()" title="Disattiva filtro">
+  ✕
+</button>
+
+<a href="/planet-wine/carrello.html" class="carrello-btn">
+  Carrello <span class="badge">0</span>
+</a>
+
+  <script src="/planet-wine/static/js/main.js"></script>
+  <script>
+    const homeImages = [
+      "/planet-wine/static/img/champagne.png",
+      "/planet-wine/static/img/spumante.png",
+      "/planet-wine/static/img/bianco.png",
+      "/planet-wine/static/img/rosato.png",
+      "/planet-wine/static/img/rosso.png",
+      "/planet-wine/static/img/dolce.png"
+    ];
+
+    preloadImages(homeImages).then(() => {
+      showPage();
+    });
+
+    /* ── FILTRO PREZZO ──────────────────────────────────────────── */
+
+    function aggiornaStatoFiltroUI() {
+      const filtro = getFiltro();
+      const btn = document.querySelector(".filtro-btn");
+      const reset = document.querySelector(".filtro-reset");
+
+      if (filtro && (filtro.min || filtro.max)) {
+        btn.classList.add("attivo");
+        reset.classList.add("visibile");
+      } else {
+        btn.classList.remove("attivo");
+        reset.classList.remove("visibile");
+      }
+
+      applyFiltroToLinks();
+    }
+
+    function apriFiltro() {
+      apriFiltroModal();
+    }
+
+    function resetFiltro() {
+      clearFiltro();
+      aggiornaStatoFiltroUI();
+    }
+
+    aggiornaStatoFiltroUI();
+    applyFiltroToLinks();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/planet-wine/sw.js', { scope: '/planet-wine/' })
+        .then(reg => console.log('✓ Service Worker registrato', reg))
+        .catch(err => console.error('✗ Service Worker fallito:', err));
+    }
+
+  </script>
+</body>
+</html>

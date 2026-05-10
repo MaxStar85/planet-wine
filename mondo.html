@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resto del Mondo</title>
+  <link rel="stylesheet" href="/planet-wine/static/css/style.css">
+</head>
+<body data-wait style="opacity:0">
+  <a id="btn-back" href="#" onclick="event.preventDefault(); goBack()" class="btn-back">← Indietro</a>
+  <a href="/planet-wine/index.html" class="btn-home">⌂ Home</a>
+  <a href="/planet-wine/carrello.html" class="carrello-btn">Carrello <span class="badge">0</span></a>
+
+  <div class="page">
+    <div class="page-header">
+      <h1>Resto del Mondo</h1>
+      <p id="sottotitolo"></p>
+    </div>
+
+    <div class="nazioni-grid-3col" id="nazioni-grid"></div>
+  </div>
+
+  <script src="/planet-wine/static/js/main.js"></script>
+  <script src="/planet-wine/static/js/data_engine.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const tipo = urlParams.get("tipo");
+
+    document.getElementById("sottotitolo").textContent =
+      `${tipo} · Seleziona il paese`;
+
+    document.getElementById("btn-back").href =
+      `/planet-wine/bivio.html?tipo=${encodeURIComponent(tipo)}`;
+
+    const nazioni = DataEngine.PAESI_MONDO;
+
+    const nazioniConfig = {
+      "Francia": {
+        file: "Francia.png",
+        artistica: true,
+        size: "auto 105%",
+        position: "center center"
+      },
+      "Spagna": {
+        file: "Spagna.png",
+        artistica: true,
+        size: "auto 110%",
+        position: "center 20%"
+      },
+      "Portogallo": {
+        file: "Portogallo.png",
+        artistica: true,
+        size: "auto 120%",
+        position: "center center"
+      },
+      "Austria": {
+        file: "Austria.png",
+        artistica: true,
+        size: "auto 105%",
+        position: "center center"
+      },
+      "Germania": {
+        file: "Germania.png",
+        artistica: true,
+        size: "auto 130%",
+        position: "center 20%"
+      },
+      "Libano": {
+        file: "Libano.png",
+        artistica: true,
+        size: "auto 110%",
+        position: "center center"
+      }
+    };
+
+    const container = document.getElementById("nazioni-grid");
+    const imageUrls = [];
+
+    DataEngine.disponibilitaPerPaese(tipo, getFiltro())
+      .then(disponibilita => {
+
+        nazioni.forEach(nazione => {
+          const conf = nazioniConfig[nazione];
+          const disponibile = disponibilita[nazione] === true;
+          const a = document.createElement("a");
+
+          a.className = conf && conf.artistica
+            ? "tasto-nazione tasto-nazione-mappa"
+            : "tasto-nazione";
+
+          if (!disponibile) {
+            a.classList.add("non-disponibile");
+          }
+
+          a.href = disponibile
+            ? `/planet-wine/lista.html?tipo=${encodeURIComponent(tipo)}&area=${encodeURIComponent(nazione)}${filtroPrezzoParams()}`
+            : "#";
+
+          if (conf && conf.file) {
+            const imgUrl = `/planet-wine/static/img/bandiere/${conf.file}`;
+            imageUrls.push(imgUrl);
+
+            a.style.background = `
+              linear-gradient(
+                rgba(248, 244, 236, 0.62),
+                rgba(244, 238, 228, 0.62)
+              ),
+              url("${imgUrl}") ${conf.position}/${conf.size} no-repeat,
+              linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%)
+            `;
+          }
+
+          a.innerHTML = `<span>${nazione}</span>`;
+          container.appendChild(a);
+        });
+
+        applyFiltroToLinks();
+        preloadImages(imageUrls).then(() => {
+          showPage();
+        });
+      });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/planet-wine/sw.js', { scope: '/planet-wine/' })
+        .then(reg => console.log('✓ Service Worker registrato', reg))
+        .catch(err => console.error('✗ Service Worker fallito:', err));
+    }
+  </script>
+</body>
+</html>

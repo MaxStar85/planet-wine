@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seleziona Area</title>
+  <link rel="stylesheet" href="/planet-wine/static/css/style.css">
+</head>
+<body data-wait style="opacity:0">
+  <a href="/planet-wine/index.html" class="btn-back">← Indietro</a>
+  <a href="/planet-wine/index.html" class="btn-home">⌂ Home</a>
+  <a href="/planet-wine/carrello.html" class="carrello-btn">
+    Carrello <span class="badge">0</span>
+  </a>
+
+  <div class="page">
+    <div class="page-header">
+      <h1 id="titolo-tipo"></h1>
+      <p>Seleziona l’area di provenienza</p>
+    </div>
+
+    <div class="grid-2" id="aree-grid"></div>
+  </div>
+
+  <script src="/planet-wine/static/js/main.js"></script>
+  <script src="/planet-wine/static/js/data_engine.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const tipo = urlParams.get("tipo");
+    document.getElementById("titolo-tipo").textContent = tipo;
+
+    const areeConfig = [
+      {
+        label: "Italia",
+        href: `/planet-wine/italia.html?tipo=${encodeURIComponent(tipo)}`,
+        className: "tasto tasto-area tasto-area-italia",
+        file: "/planet-wine/static/img/italia.png",
+        size: "55%",
+        position: "center"
+      },
+      {
+        label: "Resto del Mondo",
+        href: `/planet-wine/mondo.html?tipo=${encodeURIComponent(tipo)}`,
+        className: "tasto tasto-area tasto-area-mondo",
+        file: "/planet-wine/static/img/mondo_atlante.png",
+        size: "105%",
+        position: "center"
+      }
+    ];
+
+    const container = document.getElementById("aree-grid");
+    const imagesToPreload = [
+      "/planet-wine/static/img/italia.png",
+      "/planet-wine/static/img/mondo_atlante.png"
+    ];
+
+const filtro = getFiltro();
+    DataEngine.calcolaDisponibilita(tipo, filtro)
+      .then(disponibilita => {
+
+        const italiaOk = DataEngine.AREE_ITALIA
+          .some(area => disponibilita[area]);
+
+        const mondoOk = disponibilita["RestoDelMondo"] === true;
+
+        const disponibilitaAree = {
+          "Italia": italiaOk,
+          "Resto del Mondo": mondoOk
+        };
+
+        areeConfig.forEach(area => {
+          const disponibile = disponibilitaAree[area.label] === true;
+          const a = document.createElement("a");
+          a.className = area.className + " grande";
+
+          if (!disponibile) {
+            a.classList.add("non-disponibile");
+          }
+
+          a.href = disponibile ? area.href + filtroPrezzoParams() : "#";
+          a.style.background = `
+            linear-gradient(
+              rgba(248, 244, 236, 0.52),
+              rgba(244, 238, 228, 0.52)
+            ),
+            linear-gradient(
+              rgba(210, 220, 230, 0.10),
+              rgba(210, 220, 230, 0.10)
+            ),
+            url("${area.file}") ${area.position}/${area.size} no-repeat,
+            linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%)
+          `;
+
+          a.innerHTML = `<span>${area.label}</span>`;
+          container.appendChild(a);
+        });
+
+        applyFiltroToLinks();
+        preloadImages(imagesToPreload).then(() => {
+          showPage();
+        });
+      });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/planet-wine/sw.js', { scope: '/planet-wine/' })
+        .then(reg => console.log('✓ Service Worker registrato', reg))
+        .catch(err => console.error('✗ Service Worker fallito:', err));
+    }
+  </script>
+</body>
+</html>

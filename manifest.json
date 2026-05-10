@@ -1,0 +1,19 @@
+{
+  "name": "PlanetWine Carte Vini",
+  "short_name": "PlanetWine",
+  "description": "Catalogo vini offline per locali",
+  "start_url": "/planet-wine/index.html",
+  "scope": "/planet-wine/",
+  "display": "standalone",
+  "background_color": "#FBF8F2",
+  "theme_color": "#7B2D3E",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/planet-wine/static/img/PlanetWine.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

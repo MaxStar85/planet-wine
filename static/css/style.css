@@ -1,0 +1,729 @@
+@font-face {
+  font-family: "Inter";
+  src: url("/planet-wine/static/fonts/Inter_18pt-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/planet-wine/static/fonts/Inter_18pt-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/planet-wine/static/fonts/Inter_18pt-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/planet-wine/static/fonts/PlayfairDisplay-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/planet-wine/static/fonts/PlayfairDisplay-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/planet-wine/static/fonts/PlayfairDisplay-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+:root {
+  --cream:      #F5F0E8;
+  --cream-dark: #EDE7D9;
+  --white:      #FFFFFF;
+  --olive:      #6B7A5E;
+  --bordeaux:   #7B2D3E;
+  --gold:       #C8A96E;
+  --gold-light: #E8D5A3;
+  --gray:       #9A9490;
+  --gray-light: #D4CFC8;
+  --text:       #2C2825;
+  --text-light: #7A736C;
+  --shadow:     0 4px 20px rgba(44,40,37,0.10);
+  --shadow-sm:  0 2px 8px  rgba(44,40,37,0.08);
+  --radius:     clamp(10px, 1.2vw, 16px);
+  --radius-sm:  clamp(6px,  0.7vw, 10px);
+
+  --font-title: clamp(1.4rem, 2.2vw, 2.8rem);
+  --font-sub:   clamp(0.72rem, 0.85vw, 1rem);
+  --font-tasto: clamp(0.78rem, 0.9vw,  1.1rem);
+  --font-card:  clamp(0.78rem, 0.85vw, 1rem);
+  --font-prezzo:clamp(0.88rem, 1vw,    1.2rem);
+
+  --gap:        clamp(12px, 1.5vw, 28px);
+  --pad:        clamp(20px, 3vw,   60px);
+  --pad-card:   clamp(14px, 1.4vw, 24px);
+  --tasto-pad:  clamp(20px, 2.5vw, 44px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+  background-color: var(--cream);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: opacity 0.35s ease-in-out;
+}
+
+body.page-ready {
+  opacity: 1 !important;
+}
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--pad);
+}
+
+.page.top {
+  justify-content: flex-start;
+  padding-top: clamp(70px, 7vw, 100px);
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: clamp(24px, 3vw, 50px);
+}
+
+.page-header h1 {
+  font-family: "Playfair Display", serif;
+  font-size: var(--font-title);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.page-header p {
+  font-size: var(--font-sub);
+  color: var(--text-light);
+  margin-top: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── GRIGLIE TASTONI ────────────────────────────────── */
+.grid-3x2 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap);
+  width: 100%;
+  max-width: clamp(600px, 65vw, 1100px);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+  width: 100%;
+  max-width: min(92vw, 1200px);
+}
+
+/* ── TASTO ──────────────────────────────────────────── */
+.tasto {
+  background:
+    linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
+  border: 1px solid rgba(200, 169, 110, 0.14);
+  border-radius: var(--radius);
+  box-shadow:
+    0 10px 30px rgba(120, 98, 64, 0.10),
+    0 2px 10px rgba(44, 40, 37, 0.05),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+  padding: var(--tasto-pad) clamp(14px, 1.8vw, 28px);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.2vw, 18px);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+  text-decoration: none;
+  color: var(--text);
+  aspect-ratio: 1 / 1.1;
+  justify-content: center;
+}
+
+.tasto:hover {
+  transform: translateY(-4px);
+  background:
+    linear-gradient(180deg, #FCF9F3 0%, #F1EADB 100%);
+  border-color: rgba(200, 169, 110, 0.24);
+  box-shadow:
+    0 14px 36px rgba(120, 98, 64, 0.14),
+    0 3px 12px rgba(44, 40, 37, 0.06),
+    inset 0 1px 0 rgba(255,255,255,0.78);
+}
+
+.tasto:active { transform: translateY(-1px); }
+
+.tasto .bottiglia-svg {
+  width:  clamp(32px, 3.5vw, 56px);
+  height: clamp(54px, 6vw,   96px);
+}
+
+.tasto span {
+  font-family: "Playfair Display", serif;
+  font-size: var(--font-tasto);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--text);
+}
+
+.tasto.grande {
+  aspect-ratio: 1 / 0.84;
+  padding: clamp(24px, 2.8vw, 42px);
+}
+
+.tasto.grande .emoji { font-size: clamp(1.8rem, 3vw, 3.2rem); }
+.tasto.grande span   { font-size: clamp(1rem, 1.25vw, 1.5rem); }
+
+.tasto-area {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(200, 169, 110, 0.14);
+  box-shadow:
+    0 10px 30px rgba(120, 98, 64, 0.10),
+    0 2px 10px rgba(44, 40, 37, 0.05),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+.tasto-area:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 14px 36px rgba(120, 98, 64, 0.14),
+    0 3px 12px rgba(44, 40, 37, 0.06),
+    inset 0 1px 0 rgba(255,255,255,0.78);
+}
+
+.tasto-area span {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── PULSANTI FISSI ─────────────────────────────────── */
+.btn-back,
+.btn-home {
+  position: fixed;
+  top: clamp(12px, 1.5vw, 24px);
+  background: rgba(255, 252, 246, 0.6);
+  border: 1px solid var(--gray-light);
+  border-radius: 50px;
+  padding: clamp(8px,0.8vw,12px) clamp(14px,1.4vw,22px);
+  font-size: clamp(0.72rem, 0.8vw, 0.9rem);
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(44, 40, 37, 0.06);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  letter-spacing: 0.04em;
+  z-index: 100;
+}
+
+.btn-back {
+  left: clamp(12px, 1.5vw, 24px);
+}
+
+.btn-home {
+  left: clamp(120px, 10vw, 150px);
+}
+
+.btn-back:hover,
+.btn-home:hover {
+  color: var(--bordeaux);
+  border-color: rgba(123, 45, 62, 0.28);
+  background: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(44, 40, 37, 0.10);
+}
+
+.carrello-btn {
+  position: fixed;
+  top: clamp(12px, 1.5vw, 24px);
+  right: clamp(12px, 1.5vw, 24px);
+  background: rgba(255, 252, 246, 0.6);
+  border: 1px solid var(--gray-light);
+  border-radius: 50px;
+  padding: clamp(8px,0.8vw,12px) clamp(16px,1.5vw,24px);
+  font-size: clamp(0.72rem, 0.8vw, 0.9rem);
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(44, 40, 37, 0.06);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  letter-spacing: 0.04em;
+  z-index: 100;
+}
+
+.carrello-btn:hover {
+  color: var(--bordeaux);
+  border-color: rgba(123, 45, 62, 0.28);
+  background: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(44, 40, 37, 0.10);
+}
+
+.carrello-btn .badge {
+  background: var(--gold);
+  color: var(--text);
+  border-radius: 50%;
+  width:  clamp(16px, 1.4vw, 22px);
+  height: clamp(16px, 1.4vw, 22px);
+  font-size: clamp(0.6rem, 0.65vw, 0.78rem);
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.logo-header {
+  position: fixed;
+  top: clamp(12px, 1.2vw, 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(0.62rem, 0.72vw, 0.85rem);
+  letter-spacing: 0.18em;
+  color: var(--text-light);
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+/* ── CARD VINO ──────────────────────────────────────── */
+.lista-vini {
+  width: 100%;
+  max-width: clamp(700px, 75vw, 1200px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 0.9vw, 14px);
+}
+
+.card-vino {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: var(--pad-card) clamp(16px, 1.8vw, 28px);
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.4vw, 22px);
+  transition: box-shadow 0.15s;
+}
+
+.card-vino:hover         { box-shadow: var(--shadow); }
+.card-vino.spumante      { background: #FEFBF0; }
+.card-vino.spumante-rose { background: #FEF5F5; }
+
+.card-vino .icona {
+  font-size: clamp(1.2rem, 1.6vw, 2rem);
+  flex-shrink: 0;
+}
+
+.card-vino .info { flex: 1; min-width: 0; }
+
+.card-vino .info .nome {
+  font-family: "Playfair Display", serif;
+  font-size: var(--font-card);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-vino .info .sub {
+  font-size: clamp(0.68rem, 0.75vw, 0.88rem);
+  color: var(--text-light);
+  margin-top: 3px;
+}
+
+.card-vino .tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.tag {
+  font-size: clamp(0.58rem, 0.65vw, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.tag.bio    { background: #E8F0E4; color: #4A7A3C; }
+.tag.new    { background: #E8EEF8; color: #2D5AA0; }
+.tag.anfora { background: #F0EAE0; color: #8B6940; }
+.tag.triple { background: #F0E8F0; color: #7A3A7A; }
+.tag.dl     { background: #F0F0F0; color: #666; }
+
+.card-vino .prezzo { text-align: right; flex-shrink: 0; }
+
+.card-vino .prezzo .euro {
+  font-family: "Playfair Display", serif;
+  font-size: var(--font-prezzo);
+  font-weight: 700;
+  color: var(--bordeaux);
+}
+
+.card-vino .prezzo .cap {
+  font-size: clamp(0.62rem, 0.7vw, 0.8rem);
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.card-vino .prezzo .indisponibile {
+  font-size: clamp(0.62rem, 0.7vw, 0.8rem);
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.btn-aggiungi {
+  background: var(--cream-dark);
+  border: none;
+  border-radius: 50%;
+  width:  clamp(30px, 2.8vw, 44px);
+  height: clamp(30px, 2.8vw, 44px);
+  font-size: clamp(1rem, 1.2vw, 1.5rem);
+  cursor: pointer;
+  color: var(--olive);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.btn-aggiungi:hover    { background: var(--olive); color: white; }
+.btn-aggiungi.aggiunto { background: var(--bordeaux); color: white; }
+
+/* ── REGIONI / NAZIONI ──────────────────────────────── */
+.regioni-grid,
+.nazioni-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(12px, 1.3vw, 22px);
+  justify-content: center;
+  max-width: clamp(920px, 85vw, 1600px);
+}
+
+.tasto-regione,
+.tasto-nazione {
+  position: relative;
+  overflow: hidden;
+  width: clamp(160px, 16vw, 280px);
+  height: clamp(84px, 8.5vw, 145px);
+  text-align: center;
+  background:
+    linear-gradient(
+      rgba(248, 244, 236, 0.74),
+      rgba(244, 238, 228, 0.74)
+    ),
+    linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
+  border: 1px solid rgba(200, 169, 110, 0.14);
+  border-radius: var(--radius-sm);
+  padding: 0;
+  cursor: pointer;
+  box-shadow:
+    0 6px 18px rgba(120, 98, 64, 0.08),
+    0 2px 8px rgba(44, 40, 37, 0.04),
+    inset 0 1px 0 rgba(255,255,255,0.75);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(0.76rem, 0.9vw, 1.02rem);
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    filter 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tasto-regione:hover,
+.tasto-nazione:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 24px rgba(120, 98, 64, 0.12),
+    0 3px 10px rgba(44, 40, 37, 0.05),
+    inset 0 1px 0 rgba(255,255,255,0.82);
+  border-color: rgba(200, 169, 110, 0.22);
+  filter: brightness(0.995);
+}
+
+.tasto-regione span,
+.tasto-nazione span {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  padding: clamp(7px, 0.8vw, 9px) clamp(14px, 1.4vw, 20px);
+  border-radius: 999px;
+  background: rgba(255, 250, 242, 0.84);
+  border: 1px solid rgba(200, 169, 110, 0.10);
+  box-shadow:
+    0 2px 8px rgba(120, 98, 64, 0.05),
+    inset 0 1px 0 rgba(255,255,255,0.65);
+  color: #2C2825;
+  font-weight: 600;
+  line-height: 1.1;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  max-width: 88%;
+  text-align: center;
+}
+
+.tasto-regione-mappa span,
+.tasto-nazione-mappa span {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 0;
+  max-width: 90%;
+  font-size: clamp(0.88rem, 1vw, 1.08rem);
+  font-weight: 600;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.55),
+    0 0 12px rgba(255,248,238,0.28);
+}
+
+/* ── GRIGLIA NAZIONI 3 COLONNE (mondo) ──────────────── */
+.nazioni-grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 1.4vw, 24px);
+  width: 100%;
+  max-width: clamp(520px, 55vw, 920px);
+  margin: 0 auto;
+}
+
+.nazioni-grid-3col .tasto-nazione,
+.nazioni-grid-3col .tasto-nazione-mappa {
+  width: 100%;
+  height: clamp(94px, 9vw, 150px);
+}
+
+/* ── MEDIA QUERIES ──────────────────────────────────── */
+@media (max-width: 1100px) {
+  .grid-3x2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 760px;
+  }
+
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: min(94vw, 980px);
+  }
+}
+
+@media (max-width: 760px) {
+  .regioni-grid,
+  .nazioni-grid {
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .tasto-regione,
+  .tasto-nazione {
+    width: calc(50vw - 28px);
+    min-width: 140px;
+    max-width: 200px;
+    height: clamp(78px, 16vw, 100px);
+  }
+
+  .nazioni-grid-3col {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 400px;
+  }
+
+  .btn-home {
+    left: auto;
+    right: clamp(120px, 18vw, 160px);
+  }
+}
+
+@media (max-width: 560px) {
+  .grid-3x2 {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+  }
+
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 100%;
+    gap: 10px;
+  }
+
+  .tasto-regione,
+  .tasto-nazione {
+    width: 100%;
+    max-width: 320px;
+    height: 92px;
+  }
+
+  .nazioni-grid-3col {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+    gap: 10px;
+  }
+
+  .tasto.grande {
+    aspect-ratio: 1 / 0.78;
+    padding: 12px;
+  }
+
+  .tasto.grande span {
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-height: 900px) {
+  .page {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-header h1 {
+    font-size: clamp(1.25rem, 1.9vw, 2.3rem);
+  }
+
+  .page-header p {
+    font-size: clamp(0.68rem, 0.78vw, 0.92rem);
+  }
+
+  .tasto {
+    padding: clamp(16px, 2vw, 28px);
+  }
+
+  .tasto.grande {
+    aspect-ratio: 1 / 0.68;
+  }
+
+  .bottiglia-box {
+    height: clamp(96px, 12vw, 128px);
+  }
+
+  .tasto-regione,
+  .tasto-nazione {
+    height: clamp(76px, 8vw, 96px);
+  }
+
+  .nazioni-grid-3col .tasto-nazione,
+  .nazioni-grid-3col .tasto-nazione-mappa {
+    height: clamp(82px, 9vw, 104px);
+  }
+}
+
+@media (max-height: 760px) {
+  .page {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .page-header {
+    margin-bottom: 16px;
+  }
+
+  .grid-3x2 {
+    gap: 14px;
+  }
+
+  .grid-2 {
+    gap: 14px;
+  }
+
+  .tasto {
+    padding: 16px;
+  }
+
+  .tasto span {
+    font-size: clamp(0.74rem, 0.82vw, 1rem);
+  }
+
+  .tasto.grande {
+    aspect-ratio: 1 / 0.62;
+  }
+
+  .bottiglia-box {
+    height: 96px;
+  }
+
+  .tasto-regione,
+  .tasto-nazione {
+    height: 84px;
+  }
+
+  .nazioni-grid-3col {
+    gap: 12px;
+  }
+
+  .nazioni-grid-3col .tasto-nazione,
+  .nazioni-grid-3col .tasto-nazione-mappa {
+    height: 84px;
+  }
+
+  .logo-header {
+    top: 12px;
+  }
+}
+
+/* ── TASTONI NON DISPONIBILI ────────────────────────── */
+.tasto-regione.non-disponibile,
+.tasto-nazione.non-disponibile,
+.tasto.non-disponibile {
+  opacity: 0.38;
+  filter: grayscale(0.4);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.tasto-regione.non-disponibile span,
+.tasto-nazione.non-disponibile span,
+.tasto.non-disponibile span {
+  color: var(--text-light);
+}
+
+/* ── SCROLLBAR ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gray-light); border-radius: 3px; }

@@ -1,0 +1,28 @@
+﻿{
+    "ordine_cantina":  1,
+    "new":  false,
+    "attivo":  true,
+    "codice":  "21509",
+    "prezzo":  21.5,
+    "bio":  false,
+    "astucciato":  false,
+    "prezzo_dl":  false,
+    "note":  "",
+    "anfora":  false,
+    "triple_a":  false,
+    "mesi":  "",
+    "cassa_legno":  false,
+    "prezzo_cassa":  false,
+    "tipo":  "Vino Rosso",
+    "cap_l":  0.75,
+    "nome":  "\"BALLISTARIUS\" VALLAGARINA ROSSO IGT",
+    "millesimo":  "",
+    "uvaggio":  "Cabernet Franc, Cabernet Sauvignon, Merlot, Enantio",
+    "sentori":  [
+                    "spezie orientali",
+                    "ciliegia nera",
+                    "cuoio"
+                ],
+    "area":  "Trentino",
+    "cantina":  "Letrari"
+}
