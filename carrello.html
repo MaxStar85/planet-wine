@@ -5,7 +5,411 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carrello</title>
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
+  <style>
+    .page-carrello {
+      height: 100vh;
+      overflow: hidden;
+    }
 
+    .carrello-content {
+      width: 100%;
+      max-width: clamp(700px, 75vw, 1200px);
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .carrello-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .carrello-lista {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 0.9vw, 12px);
+    }
+
+    .item-carrello {
+      border-radius: var(--radius);
+      box-shadow:
+        0 6px 18px rgba(120, 98, 64, 0.08),
+        0 2px 8px rgba(44, 40, 37, 0.04),
+        inset 0 1px 0 rgba(255,255,255,0.75);
+      padding: clamp(12px, 1.3vw, 20px) clamp(16px, 1.8vw, 28px);
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 1.4vw, 22px);
+      transition: box-shadow 0.15s ease, transform 0.15s ease, filter 0.15s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .item-carrello.spumante      { background: #FBF8F1; border-left-color: #D8BE80; }
+    .item-carrello.spumante-rose { background: #FBF7F6; border-left-color: #D8AAA5; }
+    .item-carrello.bianco        { background: #FBFAF3; border-left-color: #D6CF9A; }
+    .item-carrello.rosato        { background: #FBF7F4; border-left-color: #D9B19E; }
+    .item-carrello.rosso         { background: #FAF5F4; border-left-color: #A8747D; }
+    .item-carrello.dolce         { background: #FBF6EF; border-left-color: #C89552; }
+    .item-carrello.sparkling-tea { background: #F5FAF7; border-left-color: #7DBBA0; }
+    .item-carrello.succo         { background: #F7F9F4; border-left-color: #A8C476; }
+    .item-carrello.dealcolato    { background: #F4F8FB; border-left-color: #7EB0CB; }
+
+    .item-carrello:hover {
+      box-shadow:
+        0 10px 24px rgba(120, 98, 64, 0.12),
+        0 3px 10px rgba(44, 40, 37, 0.05),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+      transform: translateY(-1px);
+      filter: brightness(0.985);
+    }
+
+    .item-testo    { flex: 1; min-width: 0; }
+
+    .item-nome {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(0.82rem, 0.92vw, 1.05rem);
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+    .item-sub {
+      font-size: clamp(0.68rem, 0.75vw, 0.85rem);
+      color: var(--text-light);
+      margin-top: 3px;
+    }
+
+    .item-prezzo {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(0.9rem, 1vw, 1.15rem);
+      font-weight: 700;
+      color: var(--bordeaux);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .btn-rimuovi {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray);
+      font-size: clamp(0.9rem, 1vw, 1.2rem);
+      padding: 4px;
+      flex-shrink: 0;
+      transition: color 0.15s;
+    }
+
+    .btn-rimuovi:hover { color: var(--bordeaux); }
+
+    .carrello-footer {
+      width: 100%;
+      background: linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
+      border: 1px solid rgba(200, 169, 110, 0.14);
+      border-radius: var(--radius);
+      box-shadow:
+        0 10px 30px rgba(120, 98, 64, 0.10),
+        0 2px 10px rgba(44, 40, 37, 0.05),
+        inset 0 1px 0 rgba(255,255,255,0.72);
+      padding: clamp(18px, 2vw, 32px) clamp(20px, 2.5vw, 40px);
+      margin-top: clamp(12px, 1.4vw, 20px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .totale-label {
+      font-size: clamp(0.7rem, 0.78vw, 0.88rem);
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .totale-valore {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.2rem, 1.8vw, 2rem);
+      font-weight: 700;
+      color: var(--bordeaux);
+      margin-top: 4px;
+    }
+
+    .footer-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn-svuota {
+      background: transparent;
+      color: var(--text-light);
+      border: 1px solid var(--gray-light);
+      border-radius: 50px;
+      padding: clamp(12px,1.2vw,18px) clamp(20px,2vw,30px);
+      font-size: clamp(0.78rem, 0.88vw, 0.98rem);
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-svuota:hover {
+      color: var(--bordeaux);
+      border-color: rgba(123, 45, 62, 0.28);
+      background: rgba(255,255,255,0.35);
+    }
+
+    .btn-proposta {
+      background:
+        linear-gradient(rgba(70, 52, 44, 0.18), rgba(70, 52, 44, 0.18)),
+        url("/planet-wine/static/img/btn_acquarello.png") center/118% auto no-repeat;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 50px;
+      padding: clamp(12px,1.2vw,18px) clamp(24px,2.8vw,48px);
+      font-size: clamp(0.82rem, 0.92vw, 1.05rem);
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+      white-space: nowrap;
+      box-shadow:
+        0 10px 22px rgba(101, 92, 86, 0.22),
+        0 2px 8px rgba(44, 40, 37, 0.05),
+        inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+
+    .btn-proposta:hover {
+      background:
+        linear-gradient(rgba(58, 42, 36, 0.14), rgba(58, 42, 36, 0.14)),
+        url("/planet-wine/static/img/btn_acquarello.png") center/122% auto no-repeat;
+      transform: translateY(-1px);
+      box-shadow:
+        0 14px 26px rgba(101, 92, 86, 0.26),
+        0 3px 10px rgba(44, 40, 37, 0.06),
+        inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+
+    #vuoto {
+      width: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: var(--text-light);
+      padding: clamp(40px, 6vw, 80px) 20px;
+      font-style: italic;
+      font-size: clamp(0.88rem, 1vw, 1.1rem);
+    }
+
+    #vuoto a {
+      display: inline-block;
+      margin-top: 16px;
+      color: var(--bordeaux);
+      text-decoration: none;
+      font-style: normal;
+      font-weight: 500;
+      font-size: clamp(0.82rem, 0.9vw, 1rem);
+    }
+
+    #vuoto a:hover { text-decoration: underline; }
+
+    /* ── PROPOSTE SALVATE ─────────────────────────────────────────────────── */
+    .proposte-wrapper {
+      width: 100%;
+      max-width: clamp(700px, 75vw, 1200px);
+      margin: 0 auto clamp(10px, 1.2vw, 16px) auto;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
+      border: 1px solid rgba(200, 169, 110, 0.16);
+      box-shadow:
+        0 6px 18px rgba(120, 98, 64, 0.07),
+        inset 0 1px 0 rgba(255,255,255,0.72);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .proposte-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: clamp(12px, 1.3vw, 18px) clamp(16px, 1.8vw, 26px);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .proposte-header:hover {
+      background: rgba(200, 169, 110, 0.06);
+    }
+
+    .proposte-titolo {
+      font-size: clamp(0.82rem, 0.92vw, 1rem);
+      font-weight: 600;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .proposte-badge {
+      background: var(--bordeaux);
+      color: white;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .proposte-arrow {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      transition: transform 0.2s ease;
+    }
+
+    .proposte-panel {
+      border-top: 1px solid rgba(200, 169, 110, 0.14);
+      padding: clamp(12px, 1.4vw, 20px) clamp(16px, 1.8vw, 26px);
+    }
+
+    .proposte-search {
+      width: 100%;
+      padding: clamp(8px, 0.9vw, 12px) clamp(12px, 1.3vw, 18px);
+      border: 1.5px solid var(--gray-light);
+      border-radius: var(--radius-sm);
+      font-size: clamp(0.82rem, 0.92vw, 1rem);
+      font-family: "Inter", sans-serif;
+      background: rgba(255,252,246,0.72);
+      color: var(--text);
+      outline: none;
+      box-sizing: border-box;
+      transition: border 0.15s, box-shadow 0.15s;
+      margin-bottom: 12px;
+    }
+
+    .proposte-search:focus {
+      border-color: var(--gold);
+      box-shadow:
+        0 6px 16px rgba(120, 98, 64, 0.08),
+        inset 0 1px 0 rgba(255,255,255,0.55);
+    }
+
+    .proposte-lista {
+      max-height: clamp(180px, 22vh, 280px);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .proposta-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: clamp(10px, 1.1vw, 14px) clamp(12px, 1.4vw, 18px);
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(200, 169, 110, 0.12);
+      border-radius: var(--radius-sm);
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+
+    .proposta-item:hover {
+      background: rgba(255,255,255,0.75);
+      box-shadow: 0 4px 12px rgba(120, 98, 64, 0.08);
+    }
+
+    .proposta-item-info { flex: 1; min-width: 0; }
+
+    .proposta-item-cliente {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(0.85rem, 0.95vw, 1.05rem);
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .proposta-item-sub {
+      font-size: clamp(0.68rem, 0.75vw, 0.82rem);
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .proposta-item-btn {
+      background: transparent;
+      color: var(--bordeaux);
+      border: 1px solid rgba(123, 45, 62, 0.25);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: clamp(0.72rem, 0.8vw, 0.88rem);
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .proposta-item-btn:hover {
+      background: rgba(123, 45, 62, 0.06);
+      border-color: rgba(123, 45, 62, 0.45);
+    }
+
+    .proposta-item-delete {
+      background: transparent;
+      color: var(--gray);
+      border: none;
+      padding: 4px 8px;
+      font-size: clamp(0.82rem, 0.92vw, 1rem);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: color 0.15s;
+      line-height: 1;
+    }
+
+    .proposta-item-delete:hover {
+      color: var(--bordeaux);
+    }
+
+    .proposte-vuoto {
+      text-align: center;
+      color: var(--text-light);
+      font-style: italic;
+      font-size: clamp(0.78rem, 0.88vw, 0.95rem);
+      padding: 20px 0;
+    }
+
+    @media (max-width: 860px) {
+      .carrello-footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-proposta,
+      .btn-svuota {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body style="opacity:0">
   <a href="#" onclick="event.preventDefault(); goBack()" class="btn-back">← Indietro</a>
