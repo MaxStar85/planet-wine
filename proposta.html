@@ -5,7 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Genera Carta Vini</title>
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
-
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+    .page-proposta { height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+    .page-header { flex-shrink: 0; }
+    .proposta-content {
+      width: 100%; max-width: clamp(700px, 75vw, 1100px); margin: 0 auto;
+      flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column;
+    }
+    .proposta-box {
+      background: linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
+      border: 1px solid rgba(200, 169, 110, 0.14); border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(120, 98, 64, 0.10), 0 2px 10px rgba(44, 40, 37, 0.05), inset 0 1px 0 rgba(255,255,255,0.72);
+      padding: clamp(20px, 2.5vw, 44px); width: 100%; height: 100%;
+      display: flex; flex-direction: column; min-height: 0; overflow: hidden; box-sizing: border-box;
+    }
+    .proposta-top-row { display: flex; gap: 20px; align-items: flex-end; margin-bottom: 18px; flex-wrap: wrap; flex-shrink: 0; }
+    .top-col { flex: 1; min-width: 200px; }
+    .sconto-col { flex: 0 0 200px; }
+    .field-label { font-size: clamp(0.68rem, 0.75vw, 0.85rem); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
+    .field-input {
+      width: 100%; padding: clamp(10px, 1vw, 14px) clamp(14px, 1.4vw, 20px);
+      border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm);
+      font-size: clamp(0.85rem, 0.95vw, 1.05rem); font-family: "Inter", sans-serif;
+      background: rgba(255,252,246,0.72); color: var(--text); outline: none;
+      transition: border 0.15s, box-shadow 0.15s; box-sizing: border-box;
+    }
+    .field-input:focus { border-color: var(--gold); box-shadow: 0 6px 16px rgba(120, 98, 64, 0.08), inset 0 1px 0 rgba(255,255,255,0.55); }
+    .file-input {
+      width: 100%; padding: clamp(10px, 1vw, 14px); border: 1.5px dashed var(--gray-light);
+      border-radius: var(--radius-sm); background: rgba(255,252,246,0.68);
+      font-family: "Inter", sans-serif; color: var(--text); box-sizing: border-box; font-size: clamp(0.82rem, 0.9vw, 1rem);
+    }
+    .sconto-inline { display: flex; align-items: center; gap: 10px; }
+    .sconto-inline input[type="checkbox"] {
+      appearance: none; -webkit-appearance: none; width: 18px; height: 18px;
+      border-radius: 5px; border: 1.5px solid var(--gray-light); background: rgba(255,252,246,0.8);
+      cursor: pointer; position: relative; transition: all 0.15s ease; flex-shrink: 0;
+    }
+    .sconto-inline input[type="checkbox"]:checked { background: var(--bordeaux); border-color: var(--bordeaux); }
+    .sconto-inline input[type="checkbox"]:checked::after { content: "✓"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%); color: white; font-size: 12px; font-weight: 700; }
+    .sconto-input {
+      width: clamp(60px, 5vw, 80px); padding: clamp(6px, 0.7vw, 10px) clamp(8px, 0.9vw, 14px);
+      border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm);
+      font-size: clamp(0.85rem, 0.95vw, 1.05rem); text-align: center;
+      background: rgba(255,252,246,0.72); color: var(--text); outline: none; transition: border 0.15s;
+    }
+    .sconto-input:focus { border-color: var(--gold); }
+    .sconto-pct { font-size: clamp(0.82rem, 0.92vw, 1rem); color: var(--text-light); }
+    .vini-lista {
+      display: flex; flex-direction: column; gap: 0; margin-bottom: 14px;
+      flex: 1; min-height: 0; overflow-y: auto;
+      border: 1px solid rgba(200, 169, 110, 0.14); border-radius: var(--radius-sm);
+      padding: 8px; background: rgba(255, 255, 255, 0.3);
+    }
+    .riga-vino { display: flex; align-items: center; gap: clamp(10px, 1.2vw, 18px); padding: clamp(8px, 0.9vw, 12px) 0; border-bottom: 1px solid var(--cream-dark); }
+    .riga-nome { flex: 1; min-width: 0; }
+    .riga-nome strong { font-family: "Playfair Display", serif; font-size: clamp(0.82rem, 0.92vw, 1.05rem); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .riga-nome small { font-size: clamp(0.68rem, 0.75vw, 0.85rem); color: var(--text-light); }
+    .riga-prezzo-orig { font-size: clamp(0.78rem, 0.88vw, 1rem); color: var(--text-light); text-decoration: line-through; flex-shrink: 0; }
+    .sconto-individuale {
+      width: clamp(55px, 4.5vw, 72px); padding: clamp(5px, 0.6vw, 9px) clamp(6px, 0.8vw, 12px);
+      border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm);
+      font-size: clamp(0.78rem, 0.88vw, 1rem); text-align: center;
+      background: rgba(255,252,246,0.72); color: var(--text); outline: none;
+      transition: border 0.15s, opacity 0.15s; flex-shrink: 0;
+    }
+    .sconto-individuale:focus { border-color: var(--gold); }
+    .sconto-individuale:disabled { opacity: 0.3; pointer-events: none; }
+    .riga-prezzo-scontato { font-family: "Playfair Display", serif; font-size: clamp(0.88rem, 1vw, 1.15rem); font-weight: 700; color: var(--bordeaux); flex-shrink: 0; min-width: clamp(70px, 6vw, 90px); text-align: right; }
+    .riepilogo {
+      background: rgba(255,255,255,0.35); border: 1px solid rgba(200, 169, 110, 0.10);
+      border-radius: var(--radius-sm); padding: clamp(12px, 1.4vw, 20px) clamp(16px, 1.8vw, 28px);
+      margin-bottom: 12px; flex-shrink: 0;
+    }
+    .riepilogo-riga { display: flex; justify-content: space-between; align-items: center; margin-bottom: clamp(4px, 0.5vw, 8px); font-size: clamp(0.8rem, 0.9vw, 1rem); }
+    .riepilogo-riga:last-child { margin-bottom: 0; }
+    .riepilogo-riga.risparmio { color: var(--olive); font-weight: 600; margin-top: clamp(6px, 0.8vw, 12px); padding-top: clamp(6px, 0.8vw, 12px); border-top: 1px solid var(--gray-light); }
+    .riepilogo-riga span:last-child { font-family: "Playfair Display", serif; font-weight: 600; }
+    .btn-genera {
+      width: 100%;
+      background: linear-gradient(rgba(70, 52, 44, 0.18), rgba(70, 52, 44, 0.18)), url("/planet-wine/static/img/btn_acquarello.png") center/118% auto no-repeat;
+      color: white; border: 1px solid rgba(255,255,255,0.10); border-radius: 50px;
+      padding: clamp(14px, 1.4vw, 20px); font-size: clamp(0.88rem, 1vw, 1.1rem);
+      font-weight: 500; cursor: pointer; letter-spacing: 0.04em;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 10px 22px rgba(101, 92, 86, 0.22), 0 2px 8px rgba(44, 40, 37, 0.05), inset 0 1px 0 rgba(255,255,255,0.14);
+      flex-shrink: 0;
+    }
+    .btn-genera:hover { transform: translateY(-1px); box-shadow: 0 14px 26px rgba(101, 92, 86, 0.26), 0 3px 10px rgba(44, 40, 37, 0.06), inset 0 1px 0 rgba(255,255,255,0.16); }
+  </style>
 </head>
 <body style="opacity:0">
   <a href="#" onclick="event.preventDefault(); goBack()" class="btn-back">← Indietro</a>
