@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista</title>
+  <link rel="stylesheet" href="/planet-wine/static/css/style.css">
+  <style>
+    .lista-vini {
+      width: 100%;
+      max-width: clamp(700px, 82vw, 1400px);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .search-wrap {
+      margin-bottom: clamp(14px, 1.4vw, 20px);
+      flex-shrink: 0;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: clamp(10px, 1vw, 14px) clamp(14px, 1.4vw, 20px);
+      border: 1.5px solid var(--gray-light);
+      border-radius: 999px;
+      font-size: clamp(0.82rem, 0.9vw, 1rem);
+      font-family: "Inter", sans-serif;
+      background: rgba(255,252,246,0.72);
+      color: var(--text);
+      outline: none;
+      transition: all 0.15s ease;
+      box-shadow:
+        0 2px 8px rgba(120, 98, 64, 0.05),
+        inset 0 1px 0 rgba(255,255,255,0.45);
+    }
+
+    .search-input:focus {
+      border-color: rgba(200, 169, 110, 0.35);
+      box-shadow:
+        0 6px 16px rgba(120, 98, 64, 0.08),
+        inset 0 1px 0 rgba(255,255,255,0.55);
+    }
+
+    .lista-scroll {
+      min-height: 0;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .lista-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .cantina-header {
+      font-size: clamp(0.60rem, 0.68vw, 0.78rem);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      padding: clamp(16px, 1.8vw, 28px) 0 clamp(4px, 0.5vw, 7px) 0;
+      border-bottom: 1px solid var(--cream-dark);
+      margin-bottom: 2px;
+    }
+
+    .vino-item {
+      display: flex;
+      flex-direction: column;
+      border-radius: var(--radius-sm);
+      transition: box-shadow 0.12s, filter 0.12s, transform 0.12s;
+      overflow: hidden;
+    }
+
+    .vino-item.spumante      { background: #FBF8F1; border-left: 3px solid #D8BE80; }
+    .vino-item.spumante-rose { background: #FBF7F6; border-left: 3px solid #D8AAA5; }
+    .vino-item.bianco        { background: #FBFAF3; border-left: 3px solid #D6CF9A; }
+    .vino-item.rosato        { background: #FBF7F4; border-left: 3px solid #D9B19E; }
+    .vino-item.rosso         { background: #FAF5F4; border-left: 3px solid #A8747D; }
+    .vino-item.dolce         { background: #FBF6EF; border-left: 3px solid #C89552; }
+    .vino-item.sparkling-tea { background: #F5FAF7; border-left: 3px solid #7DBBA0; }
+    .vino-item.succo         { background: #F7F9F4; border-left: 3px solid #A8C476; }
+    .vino-item.dealcolato    { background: #F4F8FB; border-left: 3px solid #7EB0CB; }
+    .vino-item:not(.spumante):not(.spumante-rose):not(.bianco):not(.rosato):not(.rosso):not(.dolce):not(.sparkling-tea):not(.succo):not(.dealcolato) {
+      background: var(--white);
+      border-left: 3px solid transparent;
+    }
+
+    .vino-item:hover {
+      box-shadow: var(--shadow-sm);
+      filter: brightness(0.985);
+    }
+
+    .vino-main {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr)
+        5em
+        6.5em
+        40px;
+      align-items: center;
+      column-gap: clamp(8px, 1vw, 18px);
+    }
+
+    .vino-sub {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr)
+        5em
+        6.5em
+        40px;
+      align-items: center;
+      column-gap: clamp(8px, 1vw, 18px);
+    }
+
+    .vino-main > * {
+      padding: clamp(8px, 0.9vw, 12px) 0;
+    }
+
+    .vino-main > *:first-child,
+    .vino-sub > *:first-child {
+      padding-left: clamp(10px, 1.2vw, 18px);
+    }
+
+    .vino-main > *:last-child {
+      padding-right: clamp(10px, 1.2vw, 18px);
+    }
+
+    .vino-sub > * {
+      padding: 0 0 clamp(5px, 0.6vw, 8px) 0;
+    }
+
+    .riga-sep {
+      height: 1px;
+      background: var(--cream-dark);
+      margin: 0;
+    }
+
+    .c-nome-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .c-nome {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(0.72rem, 0.82vw, 0.92rem);
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .c-aromi {
+      font-size: clamp(0.58rem, 0.64vw, 0.73rem);
+      color: var(--text-light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    .c-aromi:not(:empty)::before {
+      content: " - ";
+      color: var(--gray-light);
+    }
+
+    .c-badges {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+
+    .badge-bio-img,
+    .badge-anfora-img {
+      height: clamp(12px, 1vw, 16px);
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .badge-triplea {
+      height: clamp(12px, 1vw, 16px);
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .badge-new {
+      font-size: clamp(0.50rem, 0.56vw, 0.63rem);
+      font-weight: 700;
+      color: #2D5AA0;
+      background: #E8EEF8;
+      padding: 1px 4px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .badge-astucciato {
+      font-size: clamp(0.50rem, 0.56vw, 0.63rem);
+      font-weight: 600;
+      color: #7A6A2A;
+      background: #F5F0DC;
+      padding: 1px 4px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .badge-cassa {
+      font-size: clamp(0.48rem, 0.54vw, 0.60rem);
+      font-weight: 600;
+      color: #8B6940;
+      background: #F0E8D8;
+      border: 1px solid rgba(139, 105, 64, 0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
+    .c-cl {
+      font-size: clamp(0.65rem, 0.72vw, 0.82rem);
+      color: var(--text-light);
+      font-weight: 500;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .c-prezzo {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(0.80rem, 0.88vw, 0.98rem);
+      font-weight: 700;
+      color: var(--bordeaux);
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .c-prezzo.nd {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(0.80rem, 0.88vw, 0.98rem);
+      font-weight: 700;
+      color: var(--bordeaux);
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .c-btn-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-btn {
+      background: var(--cream-dark);
+      border: none;
+      border-radius: 50%;
+      width: clamp(28px, 2.1vw, 32px);
+      aspect-ratio: 1 / 1;
+      font-size: clamp(0.9rem, 1vw, 1.2rem);
+      cursor: pointer;
+      color: var(--olive);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .card-btn:hover {
+      background: var(--olive);
+      color: white;
+    }
+
+    .card-btn.aggiunto {
+      background: var(--bordeaux);
+      color: white;
+    }
+
+    .c-uvaggio {
+      font-size: clamp(0.58rem, 0.63vw, 0.72rem);
+      color: var(--text-light);
+      font-style: italic;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    .c-codice {
+      font-style: normal;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.03em;
+    }
+
+    .c-millesimo {
+      font-size: clamp(0.58rem, 0.63vw, 0.72rem);
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .page-lista {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    @media (max-height: 860px) {
+
+
+  </style>
+</head>
+<body style="opacity:0">
+  <a href="#" onclick="event.preventDefault(); goBack()" class="btn-back">← Indietro</a>
+  <a href="/planet-wine/index.html" class="btn-home">⌂ Home</a>
+  <a href="/planet-wine/carrello.html" class="carrello-btn">Carrello <span class="badge">0</span></a>
+
+  <div class="page top page-lista">
+    <div class="page-header">
+      <h1 id="titolo-area"></h1>
+      <p id="contatore-lista"></p>
+    </div>
+
+    <div class="lista-vini">
+      <div class="search-wrap">
+        <input
+          type="text"
+          id="search-vini"
+          class="search-input"
+          placeholder="Cerca per nome o codice..."
+          oninput="filtraVini()"
+        >
+      </div>
+
+      <div class="lista-scroll">
+        <div class="lista-grid" id="lista-grid">
+
+          <div id="lista-dinamica"></div>
+
+          <div id="nessun-risultato" style="display:none; text-align:center; padding:60px 20px; color:var(--text-light); font-style:italic;">
+            Nessun vino trovato.
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/planet-wine/static/js/main.js"></script>
+  <script src="/planet-wine/static/js/data_engine.js?v=2"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const tipo = urlParams.get("tipo");
+    const area = urlParams.get("area");
+    document.getElementById("titolo-area").textContent = area;
+
+    function tipoClasse(tipo) {
+      if (["Spumante Rosé", "Champagne Rosé"].includes(tipo)) return "spumante-rose";
+      if (["Spumante", "Champagne"].includes(tipo))            return "spumante";
+      if (tipo === "Vino Bianco")                              return "bianco";
+      if (["Vino Rosato","Rosato","Vino Rosé","Rosé"].includes(tipo)) return "rosato";
+      if (tipo === "Vino Rosso")                               return "rosso";
+      if (["Vino Dolce/Passito","Vino Dolce"].includes(tipo))  return "dolce";
+      if (tipo === "Sparkling Tea")                            return "sparkling-tea";
+      if (["Succo d'Uva Rosso","Succo d'Uva Bianco"].includes(tipo)) return "succo";
+      if (["Spumante Dealcolato","Vino Bianco Dealcolato"].includes(tipo)) return "dealcolato";
+      return "";
+    }
+
+let viniCaricati = [];
+
+    async function caricaLista() {
+
+      let vini =
+        await DataEngine.getLista(area, tipo);
+
+const filtro = getFiltro();
+      if (filtro && (filtro.min !== null || filtro.max !== null)) {
+        vini = vini.filter(v => DataEngine.prezzoOk(v, filtro));
+      }
+
+      viniCaricati = vini;
+
+      const container =
+        document.getElementById("lista-dinamica");
+
+      container.innerHTML = "";
+
+      const contatore = document.getElementById("contatore-lista");
+      if (contatore) {
+        contatore.textContent = `${tipo} · ${vini.length} etichette`;
+      }
+
+      let cantinaPrecedente = "";
+
+      vini.forEach((v, index) => {
+
+        const cantina   = v.cantina   || "";
+        const nome      = v.nome      || "";
+        const tipoVino  = v.tipo      || "";
+        const uvaggio   = v.uvaggio   || "";
+        const codice    = v.codice    ? String(parseInt(v.codice)) : "";
+        const millesimo = v.millesimo || "";
+        const mesi      = v.mesi      || "";
+        const capL      = parseFloat(String(v.cap_l).replace(",", ".")) || 0;
+        const cl        = capL > 0 ? Math.round(capL * 100) : 0;
+        const prezzo    = typeof v.prezzo === "number" ? v.prezzo : -1;
+        const prezzoCassa = v.prezzo_cassa === true;
+        const prezzoDL    = v.prezzo_dl   === true;
+        const bio       = v.bio       === true;
+        const isNew     = v.new       === true;
+        const anfora    = v.anfora    === true;
+        const tripleA   = v.triple_a  === true;
+        const astucciato  = v.astucciato  === true;
+        const cassaLegno  = v.cassa_legno === true;
+        const sentori   = Array.isArray(v.sentori) ? v.sentori : [];
+        const aromiStr  = sentori.join(" · ");
+        const hasSub    = uvaggio || millesimo || codice;
+        const cls       = tipoClasse(tipoVino);
+        const searchVal = `${nome} ${v.codice || ""} ${cantina}`.toLowerCase();
+
+        if (cantina !== cantinaPrecedente) {
+          cantinaPrecedente = cantina;
+          const header = document.createElement("div");
+          header.className = "cantina-header";
+          header.textContent = `▶ ${cantina}`;
+          container.appendChild(header);
+        }
+
+        if (index > 0) {
+          const sep = document.createElement("div");
+          sep.className = "riga-sep";
+          container.appendChild(sep);
+        }
+
+        const item = document.createElement("div");
+        item.className = `vino-item${cls ? " " + cls : ""}`;
+        item.dataset.search = searchVal;
+        item._vinoData = {
+          codice:     v.codice || "",
+          nome:       nome,
+          cantina:    cantina,
+          tipo:       tipoVino,
+          prezzo:     prezzo >= 0 ? prezzo : "",
+          cap:        capL,
+          area:       area,
+          uvaggio:    uvaggio,
+          millesimo:  millesimo,
+          mesi:       mesi,
+          bio:        bio,
+          new:        isNew,
+          anfora:     anfora,
+          triplea:    tripleA,
+          astucciato: astucciato,
+          cassalegno: cassaLegno,
+          s1:         sentori[0] || "",
+          s2:         sentori[1] || "",
+          s3:         sentori[2] || ""
+        };
+
+        let prezzoCel = "";
+        if (prezzoDL) {
+          prezzoCel = `<span class="c-prezzo nd">D.L.</span>`;
+        } else if (prezzo > 0) {
+          const prezzoCassaBadge = prezzoCassa
+            ? ` <span class="badge-cassa">cassa</span>` : "";
+          prezzoCel = `<span class="c-prezzo">€ ${prezzo.toFixed(2)}${prezzoCassaBadge}</span>`;
+        } else {
+          prezzoCel = `<span class="c-prezzo nd">—</span>`;
+        }
+
+        let badgesHtml = "";
+        if (bio)     badgesHtml += `<img src="/planet-wine/static/img/bio.png"    alt="BIO"      class="badge-bio-img">`;
+        if (anfora)  badgesHtml += `<img src="/planet-wine/static/img/anfora.png" alt="Anfora"   class="badge-anfora-img">`;
+        if (tripleA) badgesHtml += `<img src="/planet-wine/static/img/triplea.png" alt="Triple A" class="badge-triplea">`;
+        if (isNew)       badgesHtml += `<span class="badge-new">NEW</span>`;
+        if (astucciato)  badgesHtml += `<span class="badge-astucciato">📦 ast.</span>`;
+
+        item.innerHTML = `
+          <div class="vino-main">
+            <div class="c-nome-wrap">
+              <span class="c-nome">${nome}</span>
+              <span class="c-aromi">${aromiStr}</span>
+              <div class="c-badges">${badgesHtml}</div>
+            </div>
+            <span class="c-cl">${cl > 0 ? cl + " cl" : ""}</span>
+            ${prezzoCel}
+            <div class="c-btn-wrap">
+              <button class="card-btn" data-codice="${v.codice || ""}">+</button>
+            </div>
+          </div>
+          ${hasSub ? `
+          <div class="vino-sub">
+            <span class="c-uvaggio">
+              ${codice ? `<span class="c-codice">${codice}</span>${uvaggio ? " · " : ""}` : ""}${uvaggio}
+            </span>
+            <span class="c-millesimo">${millesimo}</span>
+            <span></span>
+            <span></span>
+          </div>` : ""}
+        `;
+
+        container.appendChild(item);
+
+        const btn = item.querySelector(".card-btn");
+        btn.addEventListener("click", () => {
+          const d = item._vinoData;
+          aggiungiVino(
+            d.codice, d.nome, d.cantina, d.tipo,
+            d.prezzo, d.cap, d.area, d.uvaggio,
+            d.millesimo, d.mesi, d.bio, d.new,
+            d.anfora, d.triplea, d.astucciato, d.cassalegno,
+            d.s1, d.s2, d.s3
+          );
+        });
+      });
+    }
+
+    caricaLista();
+
+    function filtraVini() {
+      const q = (document.getElementById("search-vini").value || "").toLowerCase().trim();
+      const container = document.getElementById("lista-dinamica");
+      const contatore = document.getElementById("contatore-lista");
+      const emptyBox = document.getElementById("nessun-risultato");
+      const children = Array.from(container.children);
+
+      let visibleWines = 0;
+
+      children.forEach(el => {
+        if (el.classList.contains("vino-item")) {
+          const testo = (el.dataset.search || "").toLowerCase();
+          const visible = testo.includes(q);
+          el.style.display = visible ? "" : "none";
+          if (visible) visibleWines++;
+        }
+      });
+
+      children.forEach(el => {
+        if (el.classList.contains("cantina-header")) {
+          let next = el.nextElementSibling;
+          let visibili = 0;
+
+          while (next && !next.classList.contains("cantina-header")) {
+            if (next.classList.contains("vino-item") && next.style.display !== "none") {
+              visibili++;
+            }
+            next = next.nextElementSibling;
+          }
+
+          el.style.display = visibili > 0 ? "" : "none";
+        }
+      });
+
+      let prevVisibleWine = false;
+
+      children.forEach(el => {
+        if (el.classList.contains("riga-sep")) {
+          let next = el.nextElementSibling;
+          while (next && !next.classList.contains("vino-item")) {
+            if (next.classList.contains("cantina-header")) break;
+            next = next.nextElementSibling;
+          }
+
+          if (prevVisibleWine && next && next.classList.contains("vino-item") && next.style.display !== "none") {
+            el.style.display = "";
+          } else {
+            el.style.display = "none";
+          }
+          return;
+        }
+
+        if (el.classList.contains("vino-item")) {
+          prevVisibleWine = el.style.display !== "none";
+          return;
+        }
+
+        if (el.classList.contains("cantina-header")) {
+          prevVisibleWine = false;
+        }
+      });
+
+      if (emptyBox) {
+        emptyBox.style.display = visibleWines === 0 ? "block" : "none";
+      }
+
+      if (contatore) {
+        if (q) {
+          contatore.textContent =
+            `${visibleWines} risultat${visibleWines === 1 ? "o" : "i"} · ricerca: ${q}`;
+        } else {
+          contatore.textContent = `${tipo} · ${viniCaricati.length} etichette`;
+        }
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/planet-wine/sw.js', { scope: '/planet-wine/' })
+        .then(reg => console.log('✓ Service Worker registrato', reg))
+        .catch(err => console.error('✗ Service Worker fallito:', err));
+    }
+  </script>
+</body>
+</html>
