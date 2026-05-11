@@ -321,8 +321,7 @@
     }
 
     @media (max-width: 600px) {
-      .vino-main,
-      .vino-sub {
+      .vino-main {
         grid-template-columns:
           minmax(0, 1fr)
           3em
@@ -331,15 +330,32 @@
         column-gap: 5px;
       }
 
+      .vino-main > *:first-child {
+        padding-left: 8px;
+      }
+
+      .vino-main > *:last-child {
+        padding-right: 6px;
+      }
+
+      .c-nome-wrap {
+        flex-wrap: wrap;
+      }
+
       .c-nome {
         font-size: 0.73rem;
         white-space: normal;
         line-height: 1.25;
         flex-shrink: 1;
+        width: 100%;
       }
 
       .c-aromi {
         display: none;
+      }
+
+      .c-badges {
+        flex-shrink: 0;
       }
 
       .c-cl {
@@ -358,13 +374,29 @@
         font-size: 0.88rem;
       }
 
-      .vino-main > *:first-child,
-      .vino-sub > *:first-child {
-        padding-left: 8px;
+      .vino-sub {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+        padding: 0 6px 6px 8px;
       }
 
-      .vino-main > *:last-child {
-        padding-right: 6px;
+      .vino-sub > * {
+        padding: 0;
+      }
+
+      .c-uvaggio {
+        font-size: 0.62rem;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        flex-shrink: 1;
+      }
+
+      .c-millesimo {
+        font-size: 0.62rem;
+        flex-shrink: 0;
       }
     }
   </style>
