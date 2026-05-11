@@ -318,8 +318,42 @@
     }
 
     @media (max-height: 860px) {
+    }
 
+    @media (max-width: 600px) {
+      .vino-main,
+      .vino-sub {
+        grid-template-columns:
+          minmax(0, 1fr)
+          4em
+          5.5em
+          34px;
+        column-gap: 6px;
+      }
 
+      .c-nome {
+        font-size: 0.72rem;
+        white-space: normal;
+        line-height: 1.2;
+      }
+
+      .c-aromi {
+        display: none;
+      }
+
+      .c-cl {
+        font-size: 0.65rem;
+      }
+
+      .c-prezzo {
+        font-size: 0.78rem;
+      }
+
+      .card-btn {
+        width: 28px;
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head>
 <body style="opacity:0">
