@@ -49,6 +49,9 @@
       flex: 1;
       overflow-y: auto;
       padding-right: 4px;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding-bottom: 24px;
     }
 
     .lista-grid {
@@ -313,8 +316,11 @@
     }
 
     .page-lista {
-      height: 100vh;
+      height: 100dvh;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
     }
 
     @media (max-height: 860px) {
@@ -328,6 +334,10 @@
           5em
           32px;
         column-gap: 5px;
+      }
+
+      .lista-scroll {
+        padding-bottom: 80px;
       }
 
       .vino-main > *:first-child {
