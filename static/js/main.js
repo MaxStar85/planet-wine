@@ -1,3 +1,19 @@
+// ── AUTO-UPDATE ───────────────────────────────────────────────────────────────
+fetch("/planet-wine/version.json?t=" + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    const saved = localStorage.getItem("pw_version");
+    if (saved && saved !== data.v) {
+      localStorage.setItem("pw_version", data.v);
+      caches.keys().then(keys =>
+        Promise.all(keys.map(k => caches.delete(k)))
+      ).then(() => location.reload());
+    } else {
+      localStorage.setItem("pw_version", data.v);
+    }
+  })
+  .catch(() => {});
+
 // ── CARRELLO (localStorage) ──────────────────────────────────────────────────
 function getCarrello() {
   return JSON.parse(localStorage.getItem("carrello") || "[]");
