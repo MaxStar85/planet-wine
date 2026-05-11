@@ -321,20 +321,20 @@
     }
 
     @media (max-width: 600px) {
-      .vino-main,
+      .vino-main {
+        grid-template-columns: minmax(0, 1fr) auto 34px;
+        column-gap: 8px;
+      }
+
       .vino-sub {
-        grid-template-columns:
-          minmax(0, 1fr)
-          4em
-          5.5em
-          34px;
-        column-gap: 6px;
+        grid-template-columns: minmax(0, 1fr) auto 34px;
+        column-gap: 8px;
       }
 
       .c-nome {
-        font-size: 0.72rem;
+        font-size: 0.76rem;
         white-space: normal;
-        line-height: 1.2;
+        line-height: 1.25;
       }
 
       .c-aromi {
@@ -342,16 +342,28 @@
       }
 
       .c-cl {
-        font-size: 0.65rem;
+        font-size: 0.68rem;
+        text-align: right;
       }
 
-      .c-prezzo {
-        font-size: 0.78rem;
+      .c-prezzo,
+      .c-prezzo.nd {
+        font-size: 0.82rem;
+        text-align: right;
       }
 
       .card-btn {
-        width: 28px;
-        font-size: 0.9rem;
+        width: 30px;
+        font-size: 0.95rem;
+      }
+
+      .vino-main > *:last-child {
+        padding-right: 8px;
+      }
+
+      .vino-main > *:first-child,
+      .vino-sub > *:first-child {
+        padding-left: 8px;
       }
     }
   </style>
