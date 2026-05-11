@@ -5,19 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Italia</title>
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
+  <style>
+    .page-italia {
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .italia-scroll {
+      min-height: 0;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding-bottom: 24px;
+    }
+
+    @media (max-width: 600px) {
+      .italia-scroll {
+        padding-bottom: 80px;
+      }
+    }
+  </style>
 </head>
 <body data-wait style="opacity:0">
   <a id="btn-back" href="#" onclick="event.preventDefault(); goBack()" class="btn-back">← Indietro</a>
   <a href="/planet-wine/index.html" class="btn-home">⌂ Home</a>
   <a href="/planet-wine/carrello.html" class="carrello-btn">Carrello <span class="badge">0</span></a>
 
-  <div class="page">
+  <div class="page page-italia">
     <div class="page-header">
       <h1>Italia</h1>
       <p id="sottotitolo"></p>
     </div>
 
-    <div class="regioni-grid" id="regioni"></div>
+    <div class="italia-scroll">
+      <div class="regioni-grid" id="regioni"></div>
+    </div>
   </div>
 
   <script src="/planet-wine/static/js/main.js"></script>
