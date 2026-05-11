@@ -73,7 +73,14 @@ function prezzoConfronto(vino) {
 
     try {
 
-      const fileName =
+      const FILE_MAP = {
+        "Valle d'Aosta":        "ValleDAosta",
+        "Friuli-Venezia Giulia": "FriuliVeneziaGiulia",
+        "Emilia-Romagna":        "EmiliaRomagna",
+        "Alto Adige":            "AltoAdige"
+      };
+
+      const fileName = FILE_MAP[area] ||
         area.replace(/ /g, "")
             .replace(/'/g, "")
             .replace(/-/g, "");
