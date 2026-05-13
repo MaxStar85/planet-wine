@@ -18,7 +18,7 @@
 
     .carrello-content {
       width: 100%;
-      max-width: clamp(700px, 75vw, 1200px);
+      max-width: min(clamp(700px, 75vw, 1200px), 100%);
       flex: 1;
       min-height: 0;
       overflow: hidden;
@@ -237,7 +237,7 @@
     /* ── PROPOSTE SALVATE ─────────────────────────────────────────────────── */
     .proposte-wrapper {
       width: 100%;
-      max-width: clamp(700px, 75vw, 1200px);
+      max-width: min(clamp(700px, 75vw, 1200px), 100%);
       margin: 0 auto clamp(10px, 1.2vw, 16px) auto;
       border-radius: var(--radius);
       background: linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
