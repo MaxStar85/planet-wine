@@ -5,6 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seleziona Area</title>
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
+  <style>
+    .page-bivio {
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding-top: 60px;
+      box-sizing: border-box;
+    }
+
+    .bivio-scroll {
+      min-height: 0;
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 600px) {
+      .bivio-scroll {
+        align-items: flex-start;
+        padding-bottom: 80px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+        width: 92vw;
+        gap: 12px;
+      }
+
+      .tasto-area.grande {
+        min-height: 140px;
+      }
+    }
+  </style>
 </head>
 <body data-wait style="opacity:0">
   <a href="/planet-wine/index.html" class="btn-back">← Indietro</a>
@@ -13,13 +53,15 @@
     Carrello <span class="badge">0</span>
   </a>
 
-  <div class="page">
+  <div class="page page-bivio">
     <div class="page-header">
       <h1 id="titolo-tipo"></h1>
-      <p>Seleziona l’area di provenienza</p>
+      <p>Seleziona l'area di provenienza</p>
     </div>
 
-    <div class="grid-2" id="aree-grid"></div>
+    <div class="bivio-scroll">
+      <div class="grid-2" id="aree-grid"></div>
+    </div>
   </div>
 
   <script src="/planet-wine/static/js/main.js"></script>
