@@ -7,8 +7,13 @@
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
   <style>
     .page-carrello {
-      height: 100vh;
+      height: 100dvh;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding-top: 60px;
+      box-sizing: border-box;
     }
 
     .carrello-content {
@@ -26,6 +31,9 @@
       min-height: 0;
       overflow-y: auto;
       padding-right: 4px;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding-bottom: 24px;
     }
 
     .carrello-lista {
@@ -392,6 +400,22 @@
     }
 
     @media (max-width: 860px) {
+      .page-carrello {
+        padding-top: 60px;
+      }
+
+      .carrello-scroll {
+        padding-bottom: 80px;
+      }
+
+      .carrello-content {
+        max-width: 100%;
+      }
+
+      .proposte-wrapper {
+        max-width: 100%;
+      }
+
       .carrello-footer {
         flex-direction: column;
         align-items: flex-start;
