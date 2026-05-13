@@ -78,6 +78,53 @@
       min-height: 0;
     }
 
+    @media (max-width: 600px) {
+      .home-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        width: 92vw;
+      }
+
+      .home-grid .tasto {
+        aspect-ratio: 1 / 1.05;
+        padding: 12px 8px;
+      }
+
+      .bottiglia-box {
+        height: 58%;
+      }
+
+      .home-grid .tasto span.label {
+        font-size: 0.82rem;
+      }
+
+      .home-logo-header {
+        font-size: 0.62rem;
+        margin-bottom: 8px;
+      }
+
+      .home-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .home-header p {
+        font-size: 0.68rem;
+      }
+
+      .home-header {
+        margin-bottom: 14px;
+      }
+
+      .tasto-analcolici {
+        margin-top: 14px;
+        padding: 10px 28px;
+      }
+
+      .tasto-analcolici span {
+        font-size: 0.78rem;
+      }
+    }
+
     .bottiglia-box {
       width: 100%;
       height: 55%;
