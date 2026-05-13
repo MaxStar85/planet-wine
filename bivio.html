@@ -28,6 +28,18 @@
       justify-content: center;
     }
 
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      width: min(92vw, 1100px);
+    }
+
+    .tasto-area.grande {
+      min-height: 220px;
+      padding: 18px;
+    }
+
     @media (max-width: 600px) {
       .bivio-scroll {
         align-items: flex-start;
