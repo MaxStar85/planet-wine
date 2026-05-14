@@ -145,6 +145,7 @@
 
     .carrello-footer {
       width: 100%;
+      max-width: min(clamp(700px, 75vw, 1200px), 100%);
       background: linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
       border: 1px solid rgba(200, 169, 110, 0.14);
       border-radius: var(--radius);
@@ -159,6 +160,15 @@
       align-items: center;
       gap: 20px;
       flex-shrink: 0;
+    }
+
+    @media (max-width: 860px) {
+      .carrello-footer {
+        max-width: 100%;
+        padding: 10px 14px;
+        gap: 10px;
+        margin-top: 8px;
+      }
     }
 
     .totale-label {
@@ -517,23 +527,23 @@
         </div>
       </div>
 
-      <div class="carrello-footer" id="footer" style="display:none">
-        <div>
-          <div class="totale-label">Totale listino</div>
-          <div class="totale-valore" id="totale">€ 0,00</div>
-        </div>
+    </div>
 
-        <div class="footer-actions">
-          <button class="btn-svuota" onclick="confermaVuotaCarrello()">
-            Svuota carrello
-          </button>
-
-          <button class="btn-proposta" onclick="navigateTo('/planet-wine/proposta.html')">
-            Genera Proposta →
-          </button>
-        </div>
+    <div class="carrello-footer" id="footer" style="display:none">
+      <div>
+        <div class="totale-label">Totale listino</div>
+        <div class="totale-valore" id="totale">€ 0,00</div>
       </div>
 
+      <div class="footer-actions">
+        <button class="btn-svuota" onclick="confermaVuotaCarrello()">
+          Svuota carrello
+        </button>
+
+        <button class="btn-proposta" onclick="navigateTo('/planet-wine/proposta.html')">
+          Genera Proposta →
+        </button>
+      </div>
     </div>
   </div>
 
