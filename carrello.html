@@ -560,6 +560,8 @@
         "€ " + tot.toFixed(2).replace(".", ",");
 
       showPage();
+
+      requestAnimationFrame(() => refreshLayout());
     }
 
     function confermaVuotaCarrello() {
@@ -783,14 +785,7 @@
     }
 
     renderCarrello();
-
-    // doppio requestAnimationFrame: aspetta che il browser
-    // abbia finito di disegnare il footer prima di misurarlo
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        refreshLayout();
-      });
-    });
+    refreshLayout();
 
     const footerEl = document.getElementById("footer");
     const footerObserver = new MutationObserver(refreshLayout);
