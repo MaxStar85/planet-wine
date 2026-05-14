@@ -11,58 +11,51 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      align-items: center;
       min-height: 0;
-      padding: clamp(70px, 7vw, 100px) var(--pad) var(--pad) var(--pad);
+      padding-top: clamp(70px, 7vw, 100px);
       box-sizing: border-box;
     }
 
-    @media (max-width: 860px) {
-      .page-carrello {
-        padding: 60px 12px 8px 12px;
-      }
-
-      .page-header {
-        margin-bottom: 10px;
-      }
-
-      .page-header h1 {
-        font-size: 1.4rem;
-      }
-
-      .page-header p {
-        font-size: 0.65rem;
-        margin-top: 2px;
-      }
-
-      .proposte-wrapper {
-        max-width: 100%;
-        margin-bottom: 8px;
-      }
-
-      .proposte-header {
-        padding: 10px 14px;
-      }
+    .carrello-inner {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding: 0 var(--pad) 16px var(--pad);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .carrello-content {
       width: 100%;
       max-width: min(clamp(700px, 75vw, 1200px), 100%);
-      flex: 1;
-      min-height: 0;
-      overflow: hidden;
       display: flex;
       flex-direction: column;
     }
 
-    .carrello-scroll {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      padding-right: 4px;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      padding-bottom: 24px;
+    .carrello-footer-wrap {
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 0 var(--pad) var(--pad) var(--pad);
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 860px) {
+      .page-carrello {
+        padding-top: 60px;
+      }
+
+      .carrello-inner {
+        padding: 0 12px 12px 12px;
+      }
+
+      .carrello-footer-wrap {
+        padding: 0 12px 12px 12px;
+      }
     }
 
     .carrello-lista {
@@ -491,60 +484,63 @@
   <a href="/planet-wine/index.html" class="btn-home">⌂ Home</a>
 
   <div class="page-carrello">
-    <div class="page-header">
-      <h1>Selezione</h1>
-      <p id="contatore">0 etichette selezionate</p>
-    </div>
 
-    <!-- PROPOSTE SALVATE -->
-    <div class="proposte-wrapper">
-      <div class="proposte-header" onclick="toggleProposte()">
-        <span class="proposte-titolo">📋 Proposte salvate</span>
-        <span class="proposte-badge" id="proposte-badge">0</span>
-        <span class="proposte-arrow" id="proposte-arrow">▼</span>
-      </div>
+    <div class="carrello-inner">
+      <div class="carrello-content">
 
-      <div class="proposte-panel" id="proposte-panel" style="display:none">
-        <input
-          type="text"
-          class="proposte-search"
-          id="proposte-search"
-          placeholder="Cerca cliente..."
-          oninput="renderProposte()"
-        >
-        <div class="proposte-lista" id="proposte-lista"></div>
-      </div>
-    </div>
+        <div class="page-header">
+          <h1>Selezione</h1>
+          <p id="contatore">0 etichette selezionate</p>
+        </div>
 
-    <div class="carrello-content">
+        <div class="proposte-wrapper">
+          <div class="proposte-header" onclick="toggleProposte()">
+            <span class="proposte-titolo">📋 Proposte salvate</span>
+            <span class="proposte-badge" id="proposte-badge">0</span>
+            <span class="proposte-arrow" id="proposte-arrow">▼</span>
+          </div>
 
-      <div class="carrello-scroll">
+          <div class="proposte-panel" id="proposte-panel" style="display:none">
+            <input
+              type="text"
+              class="proposte-search"
+              id="proposte-search"
+              placeholder="Cerca cliente..."
+              oninput="renderProposte()"
+            >
+            <div class="proposte-lista" id="proposte-lista"></div>
+          </div>
+        </div>
+
         <div class="carrello-lista" id="lista"></div>
 
         <div id="vuoto">
           Nessun vino selezionato.<br>
           <a href="/planet-wine/index.html">← Torna al catalogo</a>
         </div>
-      </div>
 
-    </div>
-
-    <div class="carrello-footer" id="footer" style="display:none">
-      <div>
-        <div class="totale-label">Totale listino</div>
-        <div class="totale-valore" id="totale">€ 0,00</div>
-      </div>
-
-      <div class="footer-actions">
-        <button class="btn-svuota" onclick="confermaVuotaCarrello()">
-          Svuota carrello
-        </button>
-
-        <button class="btn-proposta" onclick="navigateTo('/planet-wine/proposta.html')">
-          Genera Proposta →
-        </button>
       </div>
     </div>
+
+    <div class="carrello-footer-wrap">
+      <div class="carrello-footer" id="footer" style="display:none">
+        <div>
+          <div class="totale-label">Totale listino</div>
+          <div class="totale-valore" id="totale">€ 0,00</div>
+        </div>
+
+        <div class="footer-actions">
+          <button class="btn-svuota" onclick="confermaVuotaCarrello()">
+            Svuota carrello
+          </button>
+
+          <button class="btn-proposta" onclick="navigateTo('/planet-wine/proposta.html')">
+            Genera Proposta →
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script src="/planet-wine/static/js/main.js"></script>
