@@ -206,7 +206,13 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       padding: 0 var(--pad);
-      padding-bottom: 140px; /* fallback, sovrascritto da JS */
+      padding-bottom: 120px;
+    }
+
+    @media (max-width: 860px) {
+      .carrello-scroll {
+        padding-bottom: 100px;
+      }
     }
 
     .carrello-lista {
@@ -760,39 +766,7 @@
       });
     }
 
-    function aggiornaScrollPadding() {
-      const footer = document.getElementById("footer");
-      const scroll = document.querySelector(".carrello-scroll");
-      if (!scroll) return;
-      const footerH = (footer && footer.style.display !== "none")
-        ? footer.offsetHeight
-        : 0;
-      scroll.style.paddingBottom = (footerH + 16) + "px";
-    }
-
-    function aggiornaScrollPadding() {
-      const footer = document.getElementById("footer");
-      const scroll = document.querySelector(".carrello-scroll");
-      if (!scroll || !footer) return;
-      const footerH = footer.style.display !== "none" ? footer.offsetHeight : 0;
-      scroll.style.paddingBottom = (footerH + 16) + "px";
-    }
-
-    function refreshLayout() {
-      requestAnimationFrame(() => {
-        aggiornaScrollPadding();
-      });
-    }
-
     renderCarrello();
-    refreshLayout();
-
-    const footerEl = document.getElementById("footer");
-    const footerObserver = new MutationObserver(refreshLayout);
-    footerObserver.observe(footerEl, { attributes: true, attributeFilter: ["style"] });
-
-    window.addEventListener("resize", refreshLayout);
-    window.addEventListener("orientationchange", refreshLayout);
 
     document.getElementById("proposte-badge").textContent =
       getProposteSalvate().length;
