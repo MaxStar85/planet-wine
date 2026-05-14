@@ -6,56 +6,78 @@
   <title>Carrello</title>
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
   <style>
-    .page-carrello {
-      height: 100dvh;
+    body {
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      padding-top: clamp(70px, 7vw, 100px);
-      box-sizing: border-box;
     }
 
-    .carrello-inner {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      padding: 0 var(--pad) 16px var(--pad);
+    .carrello-top {
+      position: fixed;
+      top: clamp(70px, 7vw, 100px);
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 0 var(--pad);
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    .carrello-content {
+    .carrello-top .page-header {
       width: 100%;
       max-width: min(clamp(700px, 75vw, 1200px), 100%);
+      margin-bottom: clamp(12px, 1.4vw, 20px);
+    }
+
+    .carrello-top .proposte-wrapper {
+      width: 100%;
+      max-width: min(clamp(700px, 75vw, 1200px), 100%);
+      margin-bottom: 0;
+    }
+
+    .carrello-scroll {
+      position: fixed;
+      left: 0;
+      right: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding: 0 var(--pad);
+    }
+
+    .carrello-lista {
+      width: 100%;
+      max-width: min(clamp(700px, 75vw, 1200px), 100%);
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
+      gap: clamp(8px, 0.9vw, 12px);
     }
 
-    .carrello-footer-wrap {
-      flex-shrink: 0;
+    #vuoto {
       width: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 0 var(--pad) var(--pad) var(--pad);
-      box-sizing: border-box;
+      max-width: min(clamp(700px, 75vw, 1200px), 100%);
+      margin: 0 auto;
     }
 
-    @media (max-width: 860px) {
-      .page-carrello {
-        padding-top: 60px;
-      }
-
-      .carrello-inner {
-        padding: 0 12px 12px 12px;
-      }
-
-      .carrello-footer-wrap {
-        padding: 0 12px 12px 12px;
-      }
+    .carrello-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      width: 100%;
+      background: linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
+      border: 1px solid rgba(200, 169, 110, 0.14);
+      border-radius: var(--radius) var(--radius) 0 0;
+      box-shadow:
+        0 -4px 20px rgba(120, 98, 64, 0.10),
+        inset 0 1px 0 rgba(255,255,255,0.72);
+      padding: clamp(14px, 1.6vw, 24px) var(--pad);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      box-sizing: border-box;
     }
 
     .carrello-lista {
@@ -483,63 +505,57 @@
   <a href="#" onclick="event.preventDefault(); goBack()" class="btn-back">← Indietro</a>
   <a href="/planet-wine/index.html" class="btn-home">⌂ Home</a>
 
-  <div class="page-carrello">
-
-    <div class="carrello-inner">
-      <div class="carrello-content">
-
-        <div class="page-header">
-          <h1>Selezione</h1>
-          <p id="contatore">0 etichette selezionate</p>
-        </div>
-
-        <div class="proposte-wrapper">
-          <div class="proposte-header" onclick="toggleProposte()">
-            <span class="proposte-titolo">📋 Proposte salvate</span>
-            <span class="proposte-badge" id="proposte-badge">0</span>
-            <span class="proposte-arrow" id="proposte-arrow">▼</span>
-          </div>
-
-          <div class="proposte-panel" id="proposte-panel" style="display:none">
-            <input
-              type="text"
-              class="proposte-search"
-              id="proposte-search"
-              placeholder="Cerca cliente..."
-              oninput="renderProposte()"
-            >
-            <div class="proposte-lista" id="proposte-lista"></div>
-          </div>
-        </div>
-
-        <div class="carrello-lista" id="lista"></div>
-
-        <div id="vuoto">
-          Nessun vino selezionato.<br>
-          <a href="/planet-wine/index.html">← Torna al catalogo</a>
-        </div>
-
-      </div>
+  <div class="carrello-top">
+    <div class="page-header">
+      <h1>Selezione</h1>
+      <p id="contatore">0 etichette selezionate</p>
     </div>
 
-    <div class="carrello-footer-wrap">
-      <div class="carrello-footer" id="footer" style="display:none">
-        <div>
-          <div class="totale-label">Totale listino</div>
-          <div class="totale-valore" id="totale">€ 0,00</div>
-        </div>
+    <div class="proposte-wrapper">
+      <div class="proposte-header" onclick="toggleProposte()">
+        <span class="proposte-titolo">📋 Proposte salvate</span>
+        <span class="proposte-badge" id="proposte-badge">0</span>
+        <span class="proposte-arrow" id="proposte-arrow">▼</span>
+      </div>
 
-        <div class="footer-actions">
-          <button class="btn-svuota" onclick="confermaVuotaCarrello()">
-            Svuota carrello
-          </button>
-
-          <button class="btn-proposta" onclick="navigateTo('/planet-wine/proposta.html')">
-            Genera Proposta →
-          </button>
-        </div>
+      <div class="proposte-panel" id="proposte-panel" style="display:none">
+        <input
+          type="text"
+          class="proposte-search"
+          id="proposte-search"
+          placeholder="Cerca cliente..."
+          oninput="renderProposte()"
+        >
+        <div class="proposte-lista" id="proposte-lista"></div>
       </div>
     </div>
+  </div>
+
+  <div class="carrello-scroll">
+    <div class="carrello-lista" id="lista"></div>
+
+    <div id="vuoto">
+      Nessun vino selezionato.<br>
+      <a href="/planet-wine/index.html">← Torna al catalogo</a>
+    </div>
+  </div>
+
+  <div class="carrello-footer" id="footer" style="display:none">
+    <div>
+      <div class="totale-label">Totale listino</div>
+      <div class="totale-valore" id="totale">€ 0,00</div>
+    </div>
+
+    <div class="footer-actions">
+      <button class="btn-svuota" onclick="confermaVuotaCarrello()">
+        Svuota carrello
+      </button>
+
+      <button class="btn-proposta" onclick="navigateTo('/planet-wine/proposta.html')">
+        Genera Proposta →
+      </button>
+    </div>
+  </div>
 
   </div>
 
@@ -810,8 +826,29 @@
       });
     }
 
+    // ── CALCOLA POSIZIONI SCROLL ──────────────────────────────────────────────
+    function aggiornaPosizioneScroll() {
+      const top = document.querySelector(".carrello-top");
+      const footer = document.getElementById("footer");
+      const scroll = document.querySelector(".carrello-scroll");
+
+      const topH = top ? top.offsetHeight : 0;
+      const topStart = parseInt(getComputedStyle(document.documentElement)
+        .getPropertyValue("--carrello-top-start") || "0");
+      const footerH = footer && footer.style.display !== "none"
+        ? footer.offsetHeight : 0;
+
+      const startPx = top.getBoundingClientRect().top;
+      const scrollTop = startPx + topH + 8;
+      const scrollBottom = footerH + 8;
+
+      scroll.style.top = scrollTop + "px";
+      scroll.style.bottom = scrollBottom + "px";
+    }
+
     // ── INIT ──────────────────────────────────────────────────────────────────
     renderCarrello();
+    setTimeout(aggiornaPosizioneScroll, 50);
     document.getElementById("proposte-badge").textContent =
       getProposteSalvate().length;
 
