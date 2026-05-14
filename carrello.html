@@ -783,7 +783,14 @@
     }
 
     renderCarrello();
-    refreshLayout();
+
+    // doppio requestAnimationFrame: aspetta che il browser
+    // abbia finito di disegnare il footer prima di misurarlo
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        refreshLayout();
+      });
+    });
 
     const footerEl = document.getElementById("footer");
     const footerObserver = new MutationObserver(refreshLayout);
