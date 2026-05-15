@@ -206,7 +206,13 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       padding: 0 var(--pad);
-      padding-bottom: 16px;
+      padding-bottom: 120px;
+    }
+
+    @media (max-width: 860px) {
+      .carrello-scroll {
+        padding-bottom: 100px;
+      }
     }
 
     .carrello-lista {
@@ -313,18 +319,24 @@
     #vuoto a:hover { text-decoration: underline; }
 
     .carrello-footer {
-      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(100%, min(clamp(700px, 75vw, 1200px), 100%) + 2 * var(--pad));
+      max-width: 100%;
       background: linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
       border: 1px solid rgba(200, 169, 110, 0.14);
       border-radius: var(--radius) var(--radius) 0 0;
       box-shadow: 0 -4px 20px rgba(120, 98, 64, 0.10), inset 0 1px 0 rgba(255,255,255,0.72);
       padding: clamp(14px, 1.6vw, 24px) var(--pad);
+      padding-bottom: calc(clamp(14px, 1.6vw, 24px) + env(safe-area-inset-bottom));
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 20px;
       box-sizing: border-box;
-      flex-shrink: 0;
+      z-index: 100;
     }
 
     .totale-label {
@@ -555,6 +567,8 @@
         "€ " + tot.toFixed(2).replace(".", ",");
 
       showPage();
+
+      requestAnimationFrame(() => refreshLayout());
     }
 
     function confermaVuotaCarrello() {
