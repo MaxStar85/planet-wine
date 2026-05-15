@@ -568,7 +568,13 @@
 
       showPage();
 
-      requestAnimationFrame(() => refreshLayout());
+      requestAnimationFrame(() => {
+        const footer = document.getElementById("footer");
+        const scroll = document.querySelector(".carrello-scroll");
+        if (footer && scroll) {
+          scroll.style.paddingBottom = (footer.offsetHeight + 16) + "px";
+        }
+      });
     }
 
     function confermaVuotaCarrello() {
