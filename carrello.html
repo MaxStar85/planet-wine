@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carrello</title>
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
   <style>
@@ -16,7 +16,7 @@
       display: flex;
       flex-direction: column;
       min-height: 0;
-      padding-top: clamp(60px, 7vw, 100px);
+      padding-top: 60px;
       box-sizing: border-box;
       padding-bottom: 0;
     }
@@ -29,19 +29,11 @@
       flex-shrink: 0;
     }
 
-    .carrello-header {
+    .proposte-wrapper {
       width: 100%;
       max-width: min(clamp(700px, 75vw, 1200px), 100%);
-      margin: 0 auto clamp(12px, 1.4vw, 20px) auto;
-      padding: 0 var(--pad);
-      flex-shrink: 0;
-    }
-
-    .proposte-wrapper {
-      width: calc(min(clamp(700px, 75vw, 1200px), 100%) - 2 * var(--pad));
-      max-width: calc(min(clamp(700px, 75vw, 1200px), 100%) - 2 * var(--pad));
       margin: 0 auto clamp(10px, 1.2vw, 16px) auto;
-      padding: 0;
+      padding: 0 var(--pad);
       border-radius: var(--radius);
       background: linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
       border: 1px solid rgba(200, 169, 110, 0.16);
@@ -54,15 +46,10 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: clamp(12px, 1.3vw, 18px) clamp(16px, 1.8vw, 26px);
+      padding: clamp(12px, 1.3vw, 18px) 0;
       cursor: pointer;
       user-select: none;
       transition: background 0.15s;
-    }
-
-    .proposte-panel {
-      border-top: 1px solid rgba(200, 169, 110, 0.14);
-      padding: clamp(12px, 1.4vw, 20px) clamp(16px, 1.8vw, 26px);
     }
 
     .proposte-titolo {
@@ -206,12 +193,12 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       padding: 0 var(--pad);
-      padding-bottom: 120px;
+      padding-bottom: 140px;
     }
 
-    @media (max-width: 860px) {
+    @media (max-width: 600px) {
       .carrello-scroll {
-        padding-bottom: 100px;
+        padding-bottom: 180px;
       }
     }
 
@@ -330,7 +317,6 @@
       border-radius: var(--radius) var(--radius) 0 0;
       box-shadow: 0 -4px 20px rgba(120, 98, 64, 0.10), inset 0 1px 0 rgba(255,255,255,0.72);
       padding: clamp(14px, 1.6vw, 24px) var(--pad);
-      padding-bottom: calc(clamp(14px, 1.6vw, 24px) + env(safe-area-inset-bottom));
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -567,8 +553,6 @@
         "€ " + tot.toFixed(2).replace(".", ",");
 
       showPage();
-
-      requestAnimationFrame(() => refreshLayout());
     }
 
     function confermaVuotaCarrello() {
@@ -768,7 +752,6 @@
     }
 
     renderCarrello();
-
     document.getElementById("proposte-badge").textContent =
       getProposteSalvate().length;
 
