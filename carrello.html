@@ -328,13 +328,29 @@
       background: rgba(255,255,255,0.3);
       border: 1px solid rgba(200, 169, 110, 0.14);
       border-radius: var(--radius-sm);
-      padding: clamp(12px, 1.4vw, 20px) clamp(14px, 1.6vw, 24px);
+      padding: clamp(10px, 1.2vw, 18px) clamp(12px, 1.4vw, 20px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: clamp(8px, 1vw, 16px);
       box-sizing: border-box;
       flex-shrink: 0;
+    }
+
+    @media (max-width: 600px) {
+      .carrello-footer {
+        padding: 8px;
+        gap: 4px;
+      }
+
+      .carrello-footer > div:first-child {
+        min-width: 50px;
+      }
+
+      .btn-svuota, .btn-proposta {
+        padding: 6px 8px !important;
+        font-size: 0.65rem !important;
+      }
     }
 
     .totale-label {
