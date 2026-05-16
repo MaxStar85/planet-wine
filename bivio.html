@@ -11,21 +11,26 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      min-height: 0;
-      padding-top: clamp(60px, 7vw, 100px);
+      align-items: center;
+      justify-content: center;
+      padding: clamp(60px, 7vw, 100px) 14px 16px;
       box-sizing: border-box;
+      gap: clamp(14px, 2vw, 28px);
+    }
+
+    .page-bivio .page-header {
+      flex-shrink: 0;
+      margin-bottom: 0;
     }
 
     .bivio-scroll {
       min-height: 0;
       flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      padding-bottom: 24px;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
 
     .grid-2 {
