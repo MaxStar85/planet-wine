@@ -215,7 +215,11 @@
     const _pCliente = localStorage.getItem("proposta_cliente");
     const _pSconto  = localStorage.getItem("proposta_sconto");
     if (_pCliente) { document.getElementById("cliente").value = _pCliente; localStorage.removeItem("proposta_cliente"); }
-    if (_pSconto !== null) { document.getElementById("sconto-globale").value = parseFloat(_pSconto) || 0; localStorage.removeItem("proposta_sconto"); }
+    if (_pSconto !== null) {
+      const val = parseFloat(_pSconto) || 0;
+      if (val > 0) document.getElementById("sconto-globale").value = val;
+      localStorage.removeItem("proposta_sconto");
+    }
 
     function toggleSconto() {
       const globale = document.getElementById("sconto-globale-check").checked;
