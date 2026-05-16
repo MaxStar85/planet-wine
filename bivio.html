@@ -5,26 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seleziona Area</title>
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
-  <style>
-    .page-bivio {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: var(--pad);
-      overflow: clip;
-      box-sizing: border-box;
-    }
-
-    @media (max-width: 560px) {
-      .tasto-area.grande {
-        aspect-ratio: unset;
-        min-height: 120px;
-        max-height: 28vh;
-      }
-    }
-  </style>
 </head>
 <body data-wait style="opacity:0">
   <a href="/planet-wine/index.html" class="btn-back">← Indietro</a>
@@ -33,7 +13,7 @@
     Carrello <span class="badge">0</span>
   </a>
 
-  <div class="page-bivio">
+  <div class="page" id="page-bivio">
     <div class="page-header">
       <h1 id="titolo-tipo"></h1>
       <p>Seleziona l'area di provenienza</p>
