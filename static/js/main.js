@@ -322,7 +322,7 @@ function fixBivioHeight() {
   const page = document.querySelector(".page-bivio");
   if (!page) return;
   const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-  page.style.height = h + "px";
+  page.style.maxHeight = h + "px";
 }
 
 if (window.visualViewport) {
