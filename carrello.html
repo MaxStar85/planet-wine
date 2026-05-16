@@ -10,7 +10,7 @@
       overflow: hidden;
     }
 
-    .page-carrello {
+.page-carrello {
       height: 100dvh;
       overflow: hidden;
       display: flex;
@@ -21,6 +21,12 @@
       padding-left: var(--pad);
       padding-right: var(--pad);
       box-sizing: border-box;
+    }
+
+    @media (max-width: 600px) {
+      .page-carrello {
+        padding-bottom: 80px;
+      }
     }
 
     /* ── CARD CENTRALE (come .proposta-box) ── */
