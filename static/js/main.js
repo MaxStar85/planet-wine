@@ -301,6 +301,7 @@ window.addEventListener("pageshow", (e) => {
   }
   fixCarrelloHeight();
   fixHomeHeight();
+  fixBivioHeight();
 });
 
 function fixCarrelloHeight() {
@@ -317,9 +318,17 @@ function fixHomeHeight() {
   page.style.height = h + "px";
 }
 
+function fixBivioHeight() {
+  const page = document.querySelector(".page-bivio");
+  if (!page) return;
+  const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  page.style.height = h + "px";
+}
+
 if (window.visualViewport) {
   window.visualViewport.addEventListener("resize", fixCarrelloHeight);
   window.visualViewport.addEventListener("resize", fixHomeHeight);
+  window.visualViewport.addEventListener("resize", fixBivioHeight);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -327,6 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     fixCarrelloHeight();
     fixHomeHeight();
+    fixBivioHeight();
   }, 100);
 
   getCarrello().forEach(v => {
