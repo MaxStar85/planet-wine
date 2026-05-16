@@ -336,6 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     fixCarrelloHeight();
     fixHomeHeight();
+    fixBivioHeight();
   }, 100);
 
   getCarrello().forEach(v => {
