@@ -299,7 +299,19 @@ window.addEventListener("pageshow", (e) => {
     showPage();
     aggiornaBadge();
   }
+  fixCarrelloHeight();
 });
+
+function fixCarrelloHeight() {
+  const page = document.querySelector(".page-carrello");
+  if (!page) return;
+  const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  page.style.height = h + "px";
+}
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", fixCarrelloHeight);
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   aggiornaBadge();
