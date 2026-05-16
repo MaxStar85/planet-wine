@@ -603,6 +603,14 @@ const filtro = getFiltro();
 
         container.appendChild(item);
 
+        // Marca subito se già nel carrello
+        const carrelloAttuale = getCarrello();
+        if (carrelloAttuale.find(c => c.codice === String(v.codice || ""))) {
+          const btn = item.querySelector(".card-btn");
+          btn.classList.add("aggiunto");
+          btn.textContent = "✓";
+        }
+
         const btn = item.querySelector(".card-btn");
         btn.addEventListener("click", () => {
           const d = item._vinoData;
