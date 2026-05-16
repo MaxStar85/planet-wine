@@ -83,7 +83,7 @@
     .riepilogo-riga:last-child { margin-bottom: 0; }
     .riepilogo-riga.risparmio { color: var(--olive); font-weight: 600; margin-top: clamp(6px, 0.8vw, 12px); padding-top: clamp(6px, 0.8vw, 12px); border-top: 1px solid var(--gray-light); }
     .riepilogo-riga span:last-child { font-family: "Playfair Display", serif; font-weight: 600; }
-    .btn-genera {
+.btn-genera {
       width: 100%;
       background: linear-gradient(rgba(70, 52, 44, 0.18), rgba(70, 52, 44, 0.18)), url("/planet-wine/static/img/btn_acquarello.png") center/118% auto no-repeat;
       color: white; border: 1px solid rgba(255,255,255,0.10); border-radius: 50px;
@@ -94,6 +94,66 @@
       flex-shrink: 0;
     }
     .btn-genera:hover { transform: translateY(-1px); box-shadow: 0 14px 26px rgba(101, 92, 86, 0.26), 0 3px 10px rgba(44, 40, 37, 0.06), inset 0 1px 0 rgba(255,255,255,0.16); }
+
+    @media (max-width: 860px) {
+      .page-proposta .page-header {
+        display: none;
+      }
+
+      .page.top.page-proposta {
+        padding-top: clamp(60px, 7vw, 80px);
+      }
+
+      .proposta-box {
+        padding: 14px;
+      }
+
+      .proposta-top-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .top-col {
+        flex: 1 1 calc(50% - 5px);
+        min-width: 0;
+      }
+
+      .sconto-col {
+        flex: 0 0 100%;
+      }
+
+      .field-label {
+        font-size: 0.65rem;
+        margin-bottom: 4px;
+      }
+
+      .field-input, .file-input {
+        padding: 8px 10px;
+        font-size: 0.82rem;
+      }
+
+      .vini-lista {
+        margin-bottom: 8px;
+      }
+
+      .riepilogo {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+      }
+
+      .riepilogo-riga {
+        font-size: 0.78rem;
+        margin-bottom: 4px;
+      }
+
+      .btn-genera {
+        padding: 12px;
+        font-size: 0.88rem;
+        margin-bottom: 16px;
+      }
+    }
   </style>
 </head>
 <body style="opacity:0">
