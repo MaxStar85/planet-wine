@@ -36,9 +36,15 @@
       border: 1px solid rgba(200, 169, 110, 0.14);
       border-radius: var(--radius);
       box-shadow: 0 10px 30px rgba(120, 98, 64, 0.10), 0 2px 10px rgba(44, 40, 37, 0.05), inset 0 1px 0 rgba(255,255,255,0.72);
-      padding: clamp(16px, 2vw, 32px);
+      padding: clamp(12px, 2vw, 32px);
       box-sizing: border-box;
       overflow: hidden;
+    }
+
+    @media (max-width: 600px) {
+      .carrello-box {
+        padding: 10px;
+      }
     }
 
     .carrello-header {
