@@ -324,6 +324,10 @@ if (window.visualViewport) {
 
 document.addEventListener("DOMContentLoaded", () => {
   aggiornaBadge();
+  setTimeout(() => {
+    fixCarrelloHeight();
+    fixHomeHeight();
+  }, 100);
 
   getCarrello().forEach(v => {
     const btn = document.querySelector(`[data-codice="${v.codice}"]`);
