@@ -11,21 +11,29 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      min-height: 0;
-      padding-top: 60px;
+      align-items: center;
+      justify-content: center;
+      padding-top: clamp(60px, 7vw, 100px);
+      padding-bottom: 16px;
+      padding-left: 14px;
+      padding-right: 14px;
       box-sizing: border-box;
+      gap: clamp(14px, 2vw, 24px);
+    }
+
+    .page-bivio .page-header {
+      flex-shrink: 0;
+      margin-bottom: 0;
     }
 
     .bivio-scroll {
       min-height: 0;
       flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      padding-bottom: 24px;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
 
     .grid-2 {
@@ -41,19 +49,16 @@
     }
 
     @media (max-width: 600px) {
-      .bivio-scroll {
-        align-items: flex-start;
-        padding-bottom: 80px;
-      }
-
       .grid-2 {
         grid-template-columns: 1fr;
         width: 92vw;
-        gap: 12px;
+        gap: 10px;
       }
 
       .tasto-area.grande {
-        min-height: 140px;
+        min-height: 0;
+        height: calc((100dvh - clamp(60px, 7vw, 100px) - 16px - clamp(80px, 12vw, 120px) - 10px) / 2);
+        padding: 12px;
       }
     }
   </style>
