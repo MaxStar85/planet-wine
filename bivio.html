@@ -7,59 +7,21 @@
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
   <style>
     .page-bivio {
-      height: 100dvh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 18px 14px 10px;
-      overflow: hidden;
+      padding: var(--pad);
+      overflow: clip;
       box-sizing: border-box;
     }
 
-    .bivio-inner {
-      width: 100%;
-      max-width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transform: translateY(-12px);
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      width: min(92vw, 1100px);
-      margin: 0 auto;
-    }
-
-    .tasto-area.grande {
-      min-height: 220px;
-      padding: 18px;
-    }
-
-    @media (max-width: 600px) {
-      .grid-2 {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
+    @media (max-width: 560px) {
       .tasto-area.grande {
+        aspect-ratio: unset;
         min-height: 120px;
-        max-height: 26vh;
-      }
-    }
-
-    @media (max-height: 900px) {
-      .bivio-inner {
-        transform: translateY(-6px);
-      }
-    }
-
-    @media (max-height: 760px) {
-      .bivio-inner {
-        transform: translateY(0);
+        max-height: 28vh;
       }
     }
   </style>
@@ -72,14 +34,11 @@
   </a>
 
   <div class="page-bivio">
-    <div class="bivio-inner">
-      <div class="page-header">
-        <h1 id="titolo-tipo"></h1>
-        <p>Seleziona l'area di provenienza</p>
-      </div>
-
-      <div class="grid-2" id="aree-grid"></div>
+    <div class="page-header">
+      <h1 id="titolo-tipo"></h1>
+      <p>Seleziona l'area di provenienza</p>
     </div>
+    <div class="grid-2" id="aree-grid"></div>
   </div>
 
   <script src="/planet-wine/static/js/main.js"></script>
@@ -114,15 +73,11 @@
       "/planet-wine/static/img/mondo_atlante.png"
     ];
 
-const filtro = getFiltro();
+    const filtro = getFiltro();
     DataEngine.calcolaDisponibilita(tipo, filtro)
       .then(disponibilita => {
-
-        const italiaOk = DataEngine.AREE_ITALIA
-          .some(area => disponibilita[area]);
-
+        const italiaOk = DataEngine.AREE_ITALIA.some(area => disponibilita[area]);
         const mondoOk = disponibilita["RestoDelMondo"] === true;
-
         const disponibilitaAree = {
           "Italia": italiaOk,
           "Resto del Mondo": mondoOk
@@ -132,33 +87,20 @@ const filtro = getFiltro();
           const disponibile = disponibilitaAree[area.label] === true;
           const a = document.createElement("a");
           a.className = area.className + " grande";
-
-          if (!disponibile) {
-            a.classList.add("non-disponibile");
-          }
-
+          if (!disponibile) a.classList.add("non-disponibile");
           a.href = disponibile ? area.href + filtroPrezzoParams() : "#";
           a.style.background = `
-            linear-gradient(
-              rgba(248, 244, 236, 0.52),
-              rgba(244, 238, 228, 0.52)
-            ),
-            linear-gradient(
-              rgba(210, 220, 230, 0.10),
-              rgba(210, 220, 230, 0.10)
-            ),
+            linear-gradient(rgba(248, 244, 236, 0.52), rgba(244, 238, 228, 0.52)),
+            linear-gradient(rgba(210, 220, 230, 0.10), rgba(210, 220, 230, 0.10)),
             url("${area.file}") ${area.position}/${area.size} no-repeat,
             linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%)
           `;
-
           a.innerHTML = `<span>${area.label}</span>`;
           container.appendChild(a);
         });
 
         applyFiltroToLinks();
-        preloadImages(imagesToPreload).then(() => {
-          showPage();
-        });
+        preloadImages(imagesToPreload).then(() => showPage());
       });
 
     if ('serviceWorker' in navigator) {
