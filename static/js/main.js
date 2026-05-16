@@ -300,6 +300,7 @@ window.addEventListener("pageshow", (e) => {
     aggiornaBadge();
   }
   fixCarrelloHeight();
+  fixHomeHeight();
 });
 
 function fixCarrelloHeight() {
@@ -309,8 +310,16 @@ function fixCarrelloHeight() {
   page.style.height = h + "px";
 }
 
+function fixHomeHeight() {
+  const page = document.querySelector(".home-page");
+  if (!page) return;
+  const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  page.style.height = h + "px";
+}
+
 if (window.visualViewport) {
   window.visualViewport.addEventListener("resize", fixCarrelloHeight);
+  window.visualViewport.addEventListener("resize", fixHomeHeight);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
