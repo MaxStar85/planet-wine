@@ -193,12 +193,12 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       padding: 0 var(--pad);
-      padding-bottom: 150px;
+      padding-bottom: 170px;
     }
 
     @media (max-width: 600px) {
       .carrello-scroll {
-        padding-bottom: 190px;
+        padding-bottom: 210px;
       }
     }
 
@@ -307,15 +307,15 @@
 
     .carrello-footer {
       position: fixed;
-      bottom: 0;
+      bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
       width: min(100%, min(clamp(700px, 75vw, 1200px), 100%) + 2 * var(--pad));
-      max-width: 100%;
+      max-width: calc(100% - 32px);
       background: linear-gradient(180deg, #FBF8F2 0%, #F4EEE4 100%);
       border: 1px solid rgba(200, 169, 110, 0.14);
-      border-radius: var(--radius) var(--radius) 0 0;
-      box-shadow: 0 -4px 20px rgba(120, 98, 64, 0.10), inset 0 1px 0 rgba(255,255,255,0.72);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 24px rgba(120, 98, 64, 0.14), inset 0 1px 0 rgba(255,255,255,0.72);
       padding: clamp(14px, 1.6vw, 24px) var(--pad);
       display: flex;
       justify-content: space-between;
