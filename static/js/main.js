@@ -319,10 +319,10 @@ function fixHomeHeight() {
 }
 
 function fixBivioHeight() {
-  const page = document.querySelector(".page-bivio");
+  const page = document.getElementById("page-bivio");
   if (!page) return;
   const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-  page.style.maxHeight = h + "px";
+  page.style.height = h + "px";
 }
 
 if (window.visualViewport) {
