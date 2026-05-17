@@ -7,47 +7,49 @@
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
   <style>
     #page-bivio {
-      height: 100dvh;
+      position: fixed;
+      inset: 0;
+      min-height: unset !important;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: clamp(60px, 8vw, 90px) clamp(16px, 4vw, 48px) clamp(20px, 4vw, 48px);
+      padding: clamp(56px, 7vw, 80px) clamp(20px, 4vw, 60px) clamp(20px, 4vw, 40px);
       overflow: hidden;
       box-sizing: border-box;
     }
 
     #page-bivio .grid-2 {
-      width: min(92vw, 900px);
-      gap: 14px;
+      width: min(88vw, 1000px);
+      gap: clamp(14px, 2vw, 28px);
     }
 
     #page-bivio .tasto.grande {
-      aspect-ratio: 1 / 0.62;
+      aspect-ratio: 1 / 0.68;
+      width: 100%;
     }
 
     @media (max-width: 560px) {
       #page-bivio .grid-2 {
         grid-template-columns: 1fr;
-        width: 92vw;
-        max-width: 92vw;
-        gap: 12px;
+        width: 88vw;
+        gap: 14px;
         margin: 0 auto;
       }
 
       #page-bivio .tasto.grande {
-        aspect-ratio: 1 / 0.55;
+        aspect-ratio: 16 / 7;
         width: 100%;
       }
     }
 
-    @media (max-height: 760px) {
+    @media (max-height: 700px) {
       #page-bivio .tasto.grande {
-        aspect-ratio: 1 / 0.48;
+        aspect-ratio: 1 / 0.52;
       }
 
       #page-bivio .page-header {
-        margin-bottom: 12px;
+        margin-bottom: 10px;
       }
     }
   </style>
