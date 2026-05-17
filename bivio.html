@@ -29,12 +29,15 @@
     @media (max-width: 560px) {
       #page-bivio .grid-2 {
         grid-template-columns: 1fr;
-        width: min(92vw, 400px);
+        width: 92vw;
+        max-width: 92vw;
         gap: 12px;
+        margin: 0 auto;
       }
 
       #page-bivio .tasto.grande {
         aspect-ratio: 1 / 0.55;
+        width: 100%;
       }
     }
 
