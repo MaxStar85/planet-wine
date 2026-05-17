@@ -759,7 +759,8 @@ body.page-ready {
   }
 
   #page-bivio .tasto.grande {
-    aspect-ratio: 2.8 / 1;
+    aspect-ratio: unset;
+    height: clamp(110px, 22vw, 160px);
     padding: 14px 20px;
   }
 }
