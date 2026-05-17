@@ -5,6 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seleziona Area</title>
   <link rel="stylesheet" href="/planet-wine/static/css/style.css">
+  <style>
+    #page-bivio {
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(60px, 8vw, 90px) clamp(16px, 4vw, 48px) clamp(20px, 4vw, 48px);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    #page-bivio .grid-2 {
+      width: min(92vw, 900px);
+      gap: 14px;
+    }
+
+    #page-bivio .tasto.grande {
+      aspect-ratio: 1 / 0.62;
+    }
+
+    @media (max-width: 560px) {
+      #page-bivio .grid-2 {
+        grid-template-columns: 1fr;
+        width: min(92vw, 400px);
+        gap: 12px;
+      }
+
+      #page-bivio .tasto.grande {
+        aspect-ratio: 1 / 0.55;
+      }
+    }
+
+    @media (max-height: 760px) {
+      #page-bivio .tasto.grande {
+        aspect-ratio: 1 / 0.48;
+      }
+
+      #page-bivio .page-header {
+        margin-bottom: 12px;
+      }
+    }
+  </style>
 </head>
 <body data-wait style="opacity:0">
   <a href="/planet-wine/index.html" class="btn-back">← Indietro</a>
